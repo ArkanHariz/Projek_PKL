@@ -6,7 +6,7 @@
   <title>CMMS</title>
   <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
   <div class="d-flex">
@@ -83,7 +83,7 @@
       dashboard: `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
       "equipment-create": `<h2>Create Equipment</h2><p>Form for creating equipment.</p>`,
       "equipment-view": `<h2>View Equipment</h2><p>List of all equipment.</p>`,
-      "locations-create": `<h2>Create Location</h2><p>Form for creating location.</p>`,
+      // "locations-create": `<h2>Create Location</h2><p>Form for creating location.</p>`,
       "locations-view": `<h2>View Locations</h2><p>List of all locations.</p>`,
       "parts-create": `<h2>Create Part</h2><p>Form for creating parts.</p>`,
       "parts-view": `<h2>View Parts</h2><p>List of all parts.</p>`,
@@ -123,6 +123,7 @@
 
     content["locations-create"] = `
     <h2>Create Location</h2>
+    <p>Form for creating location.</p>
     <form id="locationForm" class="mb-3" autocomplete="off">
         <div class="mb-3">
             <label for="locationName" class="form-label">Nama Lokasi</label>
@@ -152,15 +153,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('locationForm').onsubmit = function(e) {
-            e.preventDefault();
-            this.reset();
-            const modal = new bootstrap.Modal(document.getElementById('successModal'));
-            modal.show();
-        }
-    <\/script>
     `;
   </script>
 </body>
