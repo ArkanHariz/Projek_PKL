@@ -176,8 +176,10 @@
             const desc = document.getElementById('description').value.trim();
 
             if (name && desc) {
-              locationsData.push({ name, description: desc });
-              addLocationToTable(name, desc);
+              const existing = JSON.parse(localStorage.getItem('locationsData') || '[]');
+              existing.push({ name, description: desc });
+              localStorage.setItem('locationsData', JSON.stringify(existing));
+
               document.getElementById('location-message').innerHTML =
                 '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
               this.reset();
@@ -420,11 +422,15 @@
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+
         const name = document.getElementById('locationName').value.trim();
         const desc = document.getElementById('description').value.trim();
 
         if (name && desc) {
-          locationsData.push({ name, description: desc });
+          const existing = JSON.parse(localStorage.getItem('locationsData') || '[]');
+          existing.push({ name, description: desc });
+          localStorage.setItem('locationsData', JSON.stringify(existing));
+
           document.getElementById('location-message').innerHTML =
             '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
           this.reset();
@@ -434,6 +440,7 @@
         }
       });
     }
+
 
     function initializeLocationPartsForm() {
       const form = document.getElementById('location-parts-form');
@@ -464,14 +471,16 @@
       const tableBody = document.getElementById('location-table-body');
       if (!tableBody) return;
 
+      const savedData = JSON.parse(localStorage.getItem('locationsData') || '[]');
+
       tableBody.innerHTML = '';
 
-      if (locationsData.length === 0) {
+      if (savedData.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="3" class="text-center">Belum ada data lokasi.</td></tr>';
         return;
       }
 
-      locationsData.forEach((loc, index) => {
+      savedData.forEach((loc, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${index + 1}</td>
