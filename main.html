@@ -45,8 +45,10 @@
             Parts
           </a>
           <ul class="dropdown-menu" aria-labelledby="partsDropdown">
-            <li><a class="dropdown-item nav-link" href="#" data-page="parts-create">Create</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="parts-view">View</a></li>
+            <li><a class="dropdown-item nav-link" href="#" data-page="parts-create">Create Parts</a></li>
+            <li><a class="dropdown-item nav-link" href="#" data-page="parts-view">View Parts</a></li>
+            <li><a class="dropdown-item nav-link" href="#" data-page="locations-parts-create">Create Location Parts</a></li>
+            <li><a class="dropdown-item nav-link" href="#" data-page="locations-parts-view">View Location Parts</a></li>
           </ul>
         </li>
         <!-- Admin Dropdown -->
@@ -81,13 +83,13 @@
     // Content for each page
     const content = {
       dashboard: `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
-      "equipment-create": `<h2>Create Equipment</h2><p>Form for creating equipment.</p>`,
+      // "equipment-create": `<h2>Create Equipment</h2><p>Form for creating equipment.</p>`,
       "equipment-view": `<h2>View Equipment</h2><p>List of all equipment.</p>`,
       // "locations-create": `<h2>Create Location</h2><p>Form for creating location.</p>`,
       "locations-view": `<h2>View Locations</h2><p>List of all locations.</p>`,
       "parts-create": `<h2>Create Part</h2><p>Form for creating parts.</p>`,
       "parts-view": `<h2>View Parts</h2><p>List of all parts.</p>`,
-      "admin-create-user": `<h2>Create User</h2><p>Form for creating new user.</p>`,
+      // "admin-create-user": `<h2>Create User</h2><p>Form for creating new user.</p>`,
       logout: `<h2>Logout</h2><p>You have been logged out. Thank you!</p>`
     };
 
@@ -121,6 +123,33 @@
       });
     });
 
+    content["equipment-create"] = `
+    <h2>Create Equipment</h2>
+    <p>Form for creating equipment.</p>
+    <form id="equipmentForm" class="mb-3" autocomplete="off">
+      <div class="mb-3">
+        <label for="equipmentName" class="form-label">Equipment Name</label>
+        <input type="text" class="form-control" id="equipmentName" name="equipmentName" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="equipmentLocation" class="form-label">Location</label>
+        <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
+          <option value="" disabled selected>Select location</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="equipmentStatus" class="form-label">Status</label>
+        <select class="form-select" id="equipmentStatus" name="equipmentStatus" required>
+          <option value="" disabled selected>Select status</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    `;
+
     content["locations-create"] = `
     <h2>Create Location</h2>
     <p>Form for creating location.</p>
@@ -135,24 +164,61 @@
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
+    `;
 
-    <!-- Modal -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="successModalLabel">Success</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Location has been successfully created!
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
+    content["locations-parts-create"] = `
+    <h2>Create Location Parts</h2>
+    <p>Form for creating location parts.</p>
+    <form id="locationpartForm" class="mb-3" autocomplete="off">
+        <div class="mb-3">
+            <label for="locationpartName" class="form-label">Nama Lokasi Part</label>
+            <input type="text" class="form-control" id="locationpartName" name="locationpartName" required>
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="locationpartDesc" class="form-label">Keterangan</label>
+            <input type="text" class="form-control" id="locationpartDesc" name="locationpartDesc">
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    `;
+
+    content["admin-create-user"] = `
+    <h2>Create User</h2>
+    <p>Form for creating new user.</p>
+    <form id="userForm" class="mb-3" autocomplete="off">
+      <div class="mb-3">
+        <label for="userName" class="form-label">User Name</label>
+        <input type="text" class="form-control" id="userName" name="userName" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="userEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="userEmail" name="userEmail" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="userPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="userPassword" name="userPassword" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="verifyPassword" class="form-label">Verify Password</label>
+        <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="userRole" class="form-label">User Role</label>
+        <select class="form-select" id="userRole" name="userRole" required>
+          <option value="" disabled selected>Select role</option>
+          <option value="Admin">Admin (all role)</option>
+          <option value="Dispatch">Dispatch (Create Only)</option>
+          <option value="Technician">Tech (Create or Close Only)</option>
+          <option value="Viewer">Work Order (View Only)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create User</button>
+    </form>
     `;
   </script>
 </body>
