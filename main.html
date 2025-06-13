@@ -70,6 +70,26 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    const locationsData = [];
+
+    function addLocationToTable(name, description) {
+      const tableBody = document.getElementById('location-table-body');
+      if (!tableBody) return;
+
+      // Hapus baris placeholder jika ada
+      if (tableBody.children.length === 1 && tableBody.children[0].cells[0].colSpan === 3) {
+        tableBody.innerHTML = '';
+      }
+
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${tableBody.children.length + 1}</td>
+        <td>${name}</td>
+        <td>${description}</td>
+      `;
+      tableBody.appendChild(newRow);
+    }
+
     const content = {
       dashboard: `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
 
@@ -130,7 +150,6 @@
       `,
 
       "equipment-view": `<h2>View Equipment</h2><p>List of all equipment.</p>`,
-      "locations-view": `<h2>View Locations</h2><p>List of all locations.</p>`,
       
       // Create Location Form
       "locations-create": `
@@ -156,6 +175,8 @@
             const desc = document.getElementById('description').value.trim();
 
             if (name && desc) {
+              locationsData.push({ name, description: desc });
+              addLocationToTable(name, desc);
               document.getElementById('location-message').innerHTML =
                 '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
               this.reset();
@@ -165,6 +186,25 @@
             }
           });
         <\/script>
+      `,
+
+      // View Locations
+      "locations-view": `
+        <h2>View Locations</h2>
+        <table class="table table-striped table-bordered">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nama Lokasi</th>
+              <th scope="col">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="location-table-body">
+            <tr>
+              <td colspan="3" class="text-center">Belum ada data lokasi.</td>
+            </tr>
+          </tbody>
+        </table>
       `,
 
       // Create Parts Form
@@ -336,9 +376,60 @@
         const page = this.getAttribute('data-page');
         document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
 
+        // Jalankan script tambahan
+        if (page === 'locations-create') {
+          initializeLocationForm();
+        } else if (page === 'locations-view') {
+          populateLocationTable();
+        }
+
         document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
       });
     });
+
+
+    function initializeLocationForm() {
+      const form = document.getElementById('location-form');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = document.getElementById('locationName').value.trim();
+        const desc = document.getElementById('description').value.trim();
+
+        if (name && desc) {
+          locationsData.push({ name, description: desc });
+          document.getElementById('location-message').innerHTML =
+            '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
+          this.reset();
+        } else {
+          document.getElementById('location-message').innerHTML =
+            '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+        }
+      });
+    }
+
+    function populateLocationTable() {
+      const tableBody = document.getElementById('location-table-body');
+      if (!tableBody) return;
+
+      tableBody.innerHTML = '';
+
+      if (locationsData.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="3" class="text-center">Belum ada data lokasi.</td></tr>';
+        return;
+      }
+
+      locationsData.forEach((loc, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${loc.name}</td>
+          <td>${loc.description}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
 
     // Handle dropdown toggle
     document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
