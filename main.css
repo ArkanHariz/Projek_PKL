@@ -28,6 +28,11 @@ body {
   box-shadow: none;
   width: 100%;
   padding-left: 1rem;
+  display: none;
+}
+
+.sidebar .dropdown.show .dropdown-menu {
+  display: block;
 }
 
 .sidebar .dropdown-item {
@@ -81,20 +86,7 @@ body {
     margin-bottom: 1rem;
   }
 
-  .dropdown-menu {
-    position: static !important;
-    float: none;
-    display: block;
-    width: 100%;
-    margin-top: 0.5rem;
-    box-shadow: none;
-  }
-
-  .sidebar .dropdown-menu {
-    display: none;
-  }
-
-  .sidebar .dropdown.show .dropdown-menu {
-    display: block;
+  #sidebarMenu {
+    background-color: #00529B;
   }
 }

@@ -4,47 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CMMS</title>
-  <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <div class="d-flex">
+  <div class="d-flex flex-column flex-md-row">
     <!-- Toggle Button for Mobile -->
-    <button class="btn btn-light d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="btn btn-light d-md-none m-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
       ☰ Menu
     </button>
 
     <!-- Sidebar -->
-    <nav class="sidebar d-flex flex-column flex-shrink-0 p-3">
+    <nav class="sidebar collapse d-md-flex flex-column flex-shrink-0 p-3" id="sidebarMenu">
       <div class="logo mb-4">Dover Chemical</div>
-      <ul class="nav nav-pills flex-column mb-auto collapse d-md-block" id="sidebarMenu">
+      <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
           <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
         </li>
 
-        <!-- Equipment Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Equipment</a>
-          <ul class="dropdown-menu" aria-labelledby="equipmentDropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button">Equipment</a>
+          <ul class="dropdown-menu">
             <li><a class="dropdown-item nav-link" href="#" data-page="equipment-create">Create</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="equipment-view">View</a></li>
           </ul>
         </li>
 
-        <!-- Locations Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="locationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Locations</a>
-          <ul class="dropdown-menu" aria-labelledby="locationsDropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="locationsDropdown" role="button">Locations</a>
+          <ul class="dropdown-menu">
             <li><a class="dropdown-item nav-link" href="#" data-page="locations-create">Create</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="locations-view">View</a></li>
           </ul>
         </li>
 
-        <!-- Parts Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="partsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Parts</a>
-          <ul class="dropdown-menu" aria-labelledby="partsDropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="partsDropdown" role="button">Parts</a>
+          <ul class="dropdown-menu">
             <li><a class="dropdown-item nav-link" href="#" data-page="parts-create">Create Parts</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="parts-view">View Parts</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="locations-parts-create">Create Location Parts</a></li>
@@ -52,15 +48,13 @@
           </ul>
         </li>
 
-        <!-- Admin Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
-          <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button">Admin</a>
+          <ul class="dropdown-menu">
             <li><a class="dropdown-item nav-link" href="#" data-page="admin-create-user">Create User</a></li>
           </ul>
         </li>
 
-        <!-- Logout -->
         <li>
           <a href="#" class="nav-link text-danger" data-page="logout">Logout</a>
         </li>
@@ -68,76 +62,292 @@
     </nav>
 
     <!-- Content Area -->
-    <div class="content-area flex-grow-1">
-      <div id="page-content">
-        <h2>Dashboard</h2>
-        <p>Welcome to the Dashboard!</p>
-      </div>
+    <div class="content-area flex-grow-1 p-3" id="page-content">
+      <h2>Dashboard</h2>
+      <p>Welcome to the Dashboard!</p>
     </div>
   </div>
 
-  <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Page Script -->
   <script>
     const content = {
       dashboard: `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
+
+      // Create Equipment Form
+      "equipment-create": `
+        <h2>Create Equipment</h2>
+        <form id="equipment-form">
+          <div class="mb-3">
+            <label for="equipmentName" class="form-label">Nama Equipment</label>
+            <input type="text" class="form-control" id="equipmentName" name="equipmentName" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <select class="form-select" id="location" name="location" required>
+              <option value="">-- Pilih Lokasi --</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status" required>
+              <option value="">-- Pilih Status --</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Tidak Aktif">Tidak Aktif</option>
+              <option value="Dalam Perbaikan">Dalam Perbaikan</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="keterangan" class="form-label">Keterangan</label>
+            <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+        <div id="equipment-message" class="mt-3"></div>
+
+        <script>
+          document.getElementById('equipment-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('equipmentName').value.trim();
+            const location = document.getElementById('location').value;
+            const status = document.getElementById('status').value;
+            const keterangan = document.getElementById('keterangan').value.trim();
+
+            if (name && location && status) {
+              document.getElementById('equipment-message').innerHTML =
+                '<div class="alert alert-success">Equipment "' + name + '" berhasil disimpan.</div>';
+              this.reset();
+            } else {
+              document.getElementById('equipment-message').innerHTML =
+                '<div class="alert alert-danger">Nama, Lokasi, dan Status wajib diisi.</div>';
+            }
+          });
+        <\/script>
+      `,
+
       "equipment-view": `<h2>View Equipment</h2><p>List of all equipment.</p>`,
       "locations-view": `<h2>View Locations</h2><p>List of all locations.</p>`,
-      "parts-create": `<h2>Create Part</h2><p>Form for creating parts.</p>`,
+      
+      // Create Location Form
+      "locations-create": `
+        <h2>Create Location</h2>
+        <form id="location-form">
+          <div class="mb-3">
+            <label for="locationName" class="form-label">Nama Lokasi</label>
+            <input type="text" class="form-control" id="locationName" name="locationName"/>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Keterangan</label>
+            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+        <div id="location-message" class="mt-3"></div>
+
+        <script>
+          document.getElementById('location-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('locationName').value.trim();
+            const desc = document.getElementById('description').value.trim();
+
+            if (name && desc) {
+              document.getElementById('location-message').innerHTML =
+                '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
+              this.reset();
+            } else {
+              document.getElementById('location-message').innerHTML =
+                '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+            }
+          });
+        <\/script>
+      `,
+
+      // Create Parts Form
+      "parts-create": `
+        <h2>Create Part</h2>
+        <form id="parts-form">
+          <div class="mb-3">
+            <label for="partName" class="form-label">Nama Part</label>
+            <input type="text" class="form-control" id="partName" name="partName" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <select class="form-select" id="location" name="location" required>
+              <option value="">-- Pilih Lokasi --</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="equipmentLocation" class="form-label">Equipment - Location</label>
+            <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
+              <option value="">-- Pilih Equipment --</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="keterangan" class="form-label">Keterangan</label>
+            <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+        <div id="parts-message" class="mt-3"></div>
+
+        <script>
+          document.getElementById('parts-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const partName = document.getElementById('partName').value.trim();
+            const location = document.getElementById('location').value;
+            const equipmentLocation = document.getElementById('equipmentLocation').value;
+            const keterangan = document.getElementById('keterangan').value.trim();
+
+            if (partName && location && equipmentLocation) {
+              document.getElementById('parts-message').innerHTML =
+                '<div class="alert alert-success">Part "' + partName + '" berhasil disimpan.</div>';
+              this.reset();
+            } else {
+              document.getElementById('parts-message').innerHTML =
+                '<div class="alert alert-danger">Semua field wajib diisi.</div>';
+            }
+          });
+        <\/script>
+      `,
+
       "parts-view": `<h2>View Parts</h2><p>List of all parts.</p>`,
+
+      // Create Location Parts Form
+      "locations-parts-create": `
+        <h2>Create Location Parts</h2>
+        <form id="location-parts-form">
+          <div class="mb-3">
+            <label for="locationspartsName" class="form-label">Nama Lokasi</label>
+            <input type="text" class="form-control" id="locationspartsName" name="locationspartsName" required/>
+          </div>
+          <div class="mb-3">
+            <label for="descriptionlocationsParts" class="form-label">Keterangan</label>
+            <textarea class="form-control" id="descriptionlocationsParts" name="descriptionlocationsParts" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+        <div id="location-message" class="mt-3"></div>
+
+        <script>
+          document.getElementById('location-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('locationName').value.trim();
+            const desc = document.getElementById('description').value.trim();
+
+            if (name && desc) {
+              document.getElementById('location-message').innerHTML =
+                '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
+              this.reset();
+            } else {
+              document.getElementById('location-message').innerHTML =
+                '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+            }
+          });
+        <\/script>
+      `,
+      
+      "locations-parts-view": `<h2>View Location Parts</h2><p>List of location parts.</p>`,
+
+      // Create Admin User Form
+      "admin-create-user": `
+        <h2>Create User</h2>
+        <form id="create-user-form">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Gmail</label>
+            <input type="email" class="form-control" id="email" name="email" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required />
+          </div>
+          <div class="mb-3">
+            <label for="verifyPassword" class="form-label">Verify Password</label>
+            <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required />
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">User Role</label>
+            <select class="form-select" id="role" name="role" required>
+              <option value="">-- Pilih Role --</option>
+              <option value="Admin">Admin (All Role)</option>
+              <option value="Dispatch">Dispatch (Create Only)</option>
+              <option value="Technician">Tech (Create or Close Only)</option>
+              <option value="Viewer">Work Order (View Only)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Create User</button>
+        </form>
+        <div id="user-message" class="mt-3"></div>
+
+        <script>
+          document.getElementById('create-user-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const verifyPassword = document.getElementById('verifyPassword').value;
+            const role = document.getElementById('role').value;
+
+            if (!username || !email || !password || !verifyPassword || !role) {
+              document.getElementById('user-message').innerHTML =
+                '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+              return;
+            }
+
+            if (password !== verifyPassword) {
+              document.getElementById('user-message').innerHTML =
+                '<div class="alert alert-danger">Password dan verifikasi password tidak sama.</div>';
+              return;
+            }
+
+            // Simulasi penyimpanan sukses
+            document.getElementById('user-message').innerHTML =
+              '<div class="alert alert-success">User "' + username + '" berhasil dibuat dengan role "' + role + '".</div>';
+            this.reset();
+          });
+        <\/script>
+      `,
+
       logout: `<h2>Logout</h2><p>You have been logged out. Thank you!</p>`
     };
 
-    // Navigation click handling
-    document.querySelectorAll('#sidebarMenu [data-page]').forEach(link => {
+    // Navigation click handler
+    document.querySelectorAll('[data-page]').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
+        document.querySelectorAll('.nav-link, .dropdown-item').forEach(el => el.classList.remove('active'));
+        this.classList.add('active');
 
-        // Reset all active links
-        document.querySelectorAll('#sidebarMenu > .nav-item > .nav-link').forEach(l => l.classList.remove('active'));
-        document.querySelectorAll('#sidebarMenu .dropdown-item').forEach(l => l.classList.remove('active'));
-
-        // Highlight clicked link
-        if (this.classList.contains('dropdown-item')) {
-          this.classList.add('active');
-          const parentLink = this.closest('.dropdown').querySelector('.dropdown-toggle');
-          parentLink.classList.add('active');
-        } else {
-          this.classList.add('active');
-        }
-
-        // Update content
         const page = this.getAttribute('data-page');
         document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
+
+        document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
       });
     });
 
-    // Collapse sidebar on small screen after click
-    document.querySelectorAll('#sidebarMenu [data-page]').forEach(link => {
-      link.addEventListener('click', function () {
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const bsCollapse = bootstrap.Collapse.getInstance(sidebarMenu) || new bootstrap.Collapse(sidebarMenu, { toggle: false });
-
-        if (window.innerWidth < 768 && sidebarMenu.classList.contains('show')) {
-          bsCollapse.hide();
-        }
-      });
-    });
-
-    // Handle dropdown toggle manually
+    // Handle dropdown toggle
     document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
       toggle.addEventListener('click', function (e) {
         e.preventDefault();
         const parent = this.closest('.dropdown');
         const isShown = parent.classList.contains('show');
-
-        document.querySelectorAll('.sidebar .dropdown').forEach(drop => drop.classList.remove('show'));
-
-        if (!isShown) {
-          parent.classList.add('show');
-        }
+        document.querySelectorAll('.sidebar .dropdown').forEach(d => d.classList.remove('show'));
+        if (!isShown) parent.classList.add('show');
       });
     });
 
@@ -146,101 +356,14 @@
       item.addEventListener('click', function () {
         this.closest('.dropdown').classList.remove('show');
 
+        // Auto-close sidebar on mobile
         const sidebarMenu = document.getElementById('sidebarMenu');
         const bsCollapse = bootstrap.Collapse.getInstance(sidebarMenu) || new bootstrap.Collapse(sidebarMenu, { toggle: false });
-
         if (window.innerWidth < 768 && sidebarMenu.classList.contains('show')) {
           bsCollapse.hide();
         }
       });
     });
-
-    // Extend content entries
-    content["equipment-create"] = `
-      <h2>Create Equipment</h2>
-      <form id="equipmentForm" class="mb-3" autocomplete="off">
-        <div class="mb-3">
-          <label for="equipmentName" class="form-label">Equipment Name</label>
-          <input type="text" class="form-control" id="equipmentName" name="equipmentName" required />
-        </div>
-        <div class="mb-3">
-          <label for="equipmentLocation" class="form-label">Location</label>
-          <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
-            <option value="" disabled selected>Select location</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="equipmentStatus" class="form-label">Status</label>
-          <select class="form-select" id="equipmentStatus" name="equipmentStatus" required>
-            <option value="" disabled selected>Select status</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
-    `;
-
-    content["locations-create"] = `
-      <h2>Create Location</h2>
-      <form id="locationForm" class="mb-3" autocomplete="off">
-        <div class="mb-3">
-          <label for="locationName" class="form-label">Nama Lokasi</label>
-          <input type="text" class="form-control" id="locationName" name="locationName" required />
-        </div>
-        <div class="mb-3">
-          <label for="locationDesc" class="form-label">Keterangan</label>
-          <input type="text" class="form-control" id="locationDesc" name="locationDesc" />
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
-    `;
-
-    content["locations-parts-create"] = `
-      <h2>Create Location Parts</h2>
-      <form id="locationpartForm" class="mb-3" autocomplete="off">
-        <div class="mb-3">
-          <label for="locationpartName" class="form-label">Nama Lokasi Part</label>
-          <input type="text" class="form-control" id="locationpartName" name="locationpartName" required />
-        </div>
-        <div class="mb-3">
-          <label for="locationpartDesc" class="form-label">Keterangan</label>
-          <input type="text" class="form-control" id="locationpartDesc" name="locationpartDesc" />
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
-    `;
-
-    content["admin-create-user"] = `
-      <h2>Create User</h2>
-      <form id="userForm" class="mb-3" autocomplete="off">
-        <div class="mb-3">
-          <label for="userName" class="form-label">User Name</label>
-          <input type="text" class="form-control" id="userName" name="userName" required />
-        </div>
-        <div class="mb-3">
-          <label for="userEmail" class="form-label">Email</label>
-          <input type="email" class="form-control" id="userEmail" name="userEmail" required />
-        </div>
-        <div class="mb-3">
-          <label for="userPassword" class="form-label">Password</label>
-          <input type="password" class="form-control" id="userPassword" name="userPassword" required />
-        </div>
-        <div class="mb-3">
-          <label for="verifyPassword" class="form-label">Verify Password</label>
-          <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required />
-        </div>
-        <div class="mb-3">
-          <label for="userRole" class="form-label">User Role</label>
-          <select class="form-select" id="userRole" name="userRole" required>
-            <option value="" disabled selected>Select role</option>
-            <option value="Admin">Admin (all role)</option>
-            <option value="Dispatch">Dispatch (Create Only)</option>
-            <option value="Technician">Tech (Create or Close Only)</option>
-            <option value="Viewer">Work Order (View Only)</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Create User</button>
-      </form>
-    `;
   </script>
 </body>
 </html>
