@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CMMS</title>
   <!-- Bootstrap 5 CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="main.css" />
 </head>
 <body>
   <div class="d-flex">
+    <!-- Toggle Button for Mobile -->
+    <button class="btn btn-light d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      ☰ Menu
+    </button>
+
     <!-- Sidebar -->
     <nav class="sidebar d-flex flex-column flex-shrink-0 p-3">
       <div class="logo mb-4">Dover Chemical</div>
-      <ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu">
+      <ul class="nav nav-pills flex-column mb-auto collapse d-md-block" id="sidebarMenu">
         <li class="nav-item">
-          <a href="#" class="nav-link active" data-page="dashboard">
-            Dashboard
-          </a>
+          <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
         </li>
+
         <!-- Equipment Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Equipment
-          </a>
+          <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Equipment</a>
           <ul class="dropdown-menu" aria-labelledby="equipmentDropdown">
             <li><a class="dropdown-item nav-link" href="#" data-page="equipment-create">Create</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="equipment-view">View</a></li>
           </ul>
         </li>
+
         <!-- Locations Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="locationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Locations
-          </a>
+          <a class="nav-link dropdown-toggle" href="#" id="locationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Locations</a>
           <ul class="dropdown-menu" aria-labelledby="locationsDropdown">
             <li><a class="dropdown-item nav-link" href="#" data-page="locations-create">Create</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="locations-view">View</a></li>
           </ul>
         </li>
+
         <!-- Parts Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="partsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Parts
-          </a>
+          <a class="nav-link dropdown-toggle" href="#" id="partsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Parts</a>
           <ul class="dropdown-menu" aria-labelledby="partsDropdown">
             <li><a class="dropdown-item nav-link" href="#" data-page="parts-create">Create Parts</a></li>
             <li><a class="dropdown-item nav-link" href="#" data-page="parts-view">View Parts</a></li>
@@ -51,19 +51,18 @@
             <li><a class="dropdown-item nav-link" href="#" data-page="locations-parts-view">View Location Parts</a></li>
           </ul>
         </li>
+
         <!-- Admin Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Admin
-          </a>
+          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
           <ul class="dropdown-menu" aria-labelledby="adminDropdown">
             <li><a class="dropdown-item nav-link" href="#" data-page="admin-create-user">Create User</a></li>
           </ul>
         </li>
+
+        <!-- Logout -->
         <li>
-          <a href="#" class="nav-link text-danger" data-page="logout">
-            Logout
-          </a>
+          <a href="#" class="nav-link text-danger" data-page="logout">Logout</a>
         </li>
       </ul>
     </nav>
@@ -79,172 +78,168 @@
 
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Page Script -->
   <script>
-    // Content for each page
     const content = {
       dashboard: `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
-      // "equipment-create": `<h2>Create Equipment</h2><p>Form for creating equipment.</p>`,
       "equipment-view": `<h2>View Equipment</h2><p>List of all equipment.</p>`,
-      // "locations-create": `<h2>Create Location</h2><p>Form for creating location.</p>`,
       "locations-view": `<h2>View Locations</h2><p>List of all locations.</p>`,
       "parts-create": `<h2>Create Part</h2><p>Form for creating parts.</p>`,
       "parts-view": `<h2>View Parts</h2><p>List of all parts.</p>`,
-      // "admin-create-user": `<h2>Create User</h2><p>Form for creating new user.</p>`,
       logout: `<h2>Logout</h2><p>You have been logged out. Thank you!</p>`
     };
 
-    // Handle menu clicks
+    // Navigation click handling
     document.querySelectorAll('#sidebarMenu [data-page]').forEach(link => {
-      link.addEventListener('click', function(e) {
+      link.addEventListener('click', function (e) {
         e.preventDefault();
-        // Remove active from all main nav-link (exclude dropdown-items for highlight)
+
+        // Reset all active links
         document.querySelectorAll('#sidebarMenu > .nav-item > .nav-link').forEach(l => l.classList.remove('active'));
-        // Remove active from dropdown items
         document.querySelectorAll('#sidebarMenu .dropdown-item').forEach(l => l.classList.remove('active'));
 
-        // If clicked is dropdown-item
-        if(this.classList.contains('dropdown-item')) {
+        // Highlight clicked link
+        if (this.classList.contains('dropdown-item')) {
           this.classList.add('active');
-          // Also activate parent dropdown for visual cue
           const parentLink = this.closest('.dropdown').querySelector('.dropdown-toggle');
           parentLink.classList.add('active');
         } else {
-          // If main nav-link (Dashboard/Logout)
           this.classList.add('active');
         }
 
-        // Change content
+        // Update content
         const page = this.getAttribute('data-page');
-        if(content[page]) {
-          document.getElementById('page-content').innerHTML = content[page];
-        } else {
-          document.getElementById('page-content').innerHTML = "<h2>Not Found</h2>";
+        document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
+      });
+    });
+
+    // Collapse sidebar on small screen after click
+    document.querySelectorAll('#sidebarMenu [data-page]').forEach(link => {
+      link.addEventListener('click', function () {
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const bsCollapse = bootstrap.Collapse.getInstance(sidebarMenu) || new bootstrap.Collapse(sidebarMenu, { toggle: false });
+
+        if (window.innerWidth < 768 && sidebarMenu.classList.contains('show')) {
+          bsCollapse.hide();
         }
       });
     });
 
+    // Handle dropdown toggle manually
+    document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        const parent = this.closest('.dropdown');
+        const isShown = parent.classList.contains('show');
+
+        document.querySelectorAll('.sidebar .dropdown').forEach(drop => drop.classList.remove('show'));
+
+        if (!isShown) {
+          parent.classList.add('show');
+        }
+      });
+    });
+
+    // Collapse dropdown on item click
+    document.querySelectorAll('.sidebar .dropdown-menu .dropdown-item').forEach(item => {
+      item.addEventListener('click', function () {
+        this.closest('.dropdown').classList.remove('show');
+
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const bsCollapse = bootstrap.Collapse.getInstance(sidebarMenu) || new bootstrap.Collapse(sidebarMenu, { toggle: false });
+
+        if (window.innerWidth < 768 && sidebarMenu.classList.contains('show')) {
+          bsCollapse.hide();
+        }
+      });
+    });
+
+    // Extend content entries
     content["equipment-create"] = `
-    <h2>Create Equipment</h2>
-    <p>Form for creating equipment.</p>
-    <form id="equipmentForm" class="mb-3" autocomplete="off">
-      <div class="mb-3">
-        <label for="equipmentName" class="form-label">Equipment Name</label>
-        <input type="text" class="form-control" id="equipmentName" name="equipmentName" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="equipmentLocation" class="form-label">Location</label>
-        <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
-          <option value="" disabled selected>Select location</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="equipmentStatus" class="form-label">Status</label>
-        <select class="form-select" id="equipmentStatus" name="equipmentStatus" required>
-          <option value="" disabled selected>Select status</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+      <h2>Create Equipment</h2>
+      <form id="equipmentForm" class="mb-3" autocomplete="off">
+        <div class="mb-3">
+          <label for="equipmentName" class="form-label">Equipment Name</label>
+          <input type="text" class="form-control" id="equipmentName" name="equipmentName" required />
+        </div>
+        <div class="mb-3">
+          <label for="equipmentLocation" class="form-label">Location</label>
+          <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
+            <option value="" disabled selected>Select location</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="equipmentStatus" class="form-label">Status</label>
+          <select class="form-select" id="equipmentStatus" name="equipmentStatus" required>
+            <option value="" disabled selected>Select status</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
     `;
 
     content["locations-create"] = `
-    <h2>Create Location</h2>
-    <p>Form for creating location.</p>
-    <form id="locationForm" class="mb-3" autocomplete="off">
+      <h2>Create Location</h2>
+      <form id="locationForm" class="mb-3" autocomplete="off">
         <div class="mb-3">
-            <label for="locationName" class="form-label">Nama Lokasi</label>
-            <input type="text" class="form-control" id="locationName" name="locationName" required>
+          <label for="locationName" class="form-label">Nama Lokasi</label>
+          <input type="text" class="form-control" id="locationName" name="locationName" required />
         </div>
         <div class="mb-3">
-            <label for="locationDesc" class="form-label">Keterangan</label>
-            <input type="text" class="form-control" id="locationDesc" name="locationDesc">
+          <label for="locationDesc" class="form-label">Keterangan</label>
+          <input type="text" class="form-control" id="locationDesc" name="locationDesc" />
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
-    </form>
-    `;
-
-    content["parts-create"] = `
-    <h2>Create Part</h2>
-    <form id="partsForm" class="mb-3" autocomplete="off">
-      <div class="mb-3">
-        <label for="partName" class="form-label">Part Name</label>
-        <input type="text" class="form-control" id="partName" name="partName" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="partLocation" class="form-label">Part Location</label>
-        <select class="form-select" id="partLocation" name="partLocation" required>
-          <option value="" disabled selected>Select location</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="equipmentLocation" class="form-label">Equipment - Location</label>
-        <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
-          <option value="" disabled selected>Select equipment-location</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+      </form>
     `;
 
     content["locations-parts-create"] = `
-    <h2>Create Location Parts</h2>
-    <p>Form for creating location parts.</p>
-    <form id="locationpartForm" class="mb-3" autocomplete="off">
+      <h2>Create Location Parts</h2>
+      <form id="locationpartForm" class="mb-3" autocomplete="off">
         <div class="mb-3">
-            <label for="locationpartName" class="form-label">Nama Lokasi Part</label>
-            <input type="text" class="form-control" id="locationpartName" name="locationpartName" required>
+          <label for="locationpartName" class="form-label">Nama Lokasi Part</label>
+          <input type="text" class="form-control" id="locationpartName" name="locationpartName" required />
         </div>
         <div class="mb-3">
-            <label for="locationpartDesc" class="form-label">Keterangan</label>
-            <input type="text" class="form-control" id="locationpartDesc" name="locationpartDesc">
+          <label for="locationpartDesc" class="form-label">Keterangan</label>
+          <input type="text" class="form-control" id="locationpartDesc" name="locationpartDesc" />
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+      </form>
     `;
 
     content["admin-create-user"] = `
-    <h2>Create User</h2>
-    <p>Form for creating new user.</p>
-    <form id="userForm" class="mb-3" autocomplete="off">
-      <div class="mb-3">
-        <label for="userName" class="form-label">User Name</label>
-        <input type="text" class="form-control" id="userName" name="userName" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="userEmail" class="form-label">Email</label>
-        <input type="email" class="form-control" id="userEmail" name="userEmail" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="userPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="userPassword" name="userPassword" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="verifyPassword" class="form-label">Verify Password</label>
-        <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="userRole" class="form-label">User Role</label>
-        <select class="form-select" id="userRole" name="userRole" required>
-          <option value="" disabled selected>Select role</option>
-          <option value="Admin">Admin (all role)</option>
-          <option value="Dispatch">Dispatch (Create Only)</option>
-          <option value="Technician">Tech (Create or Close Only)</option>
-          <option value="Viewer">Work Order (View Only)</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Create User</button>
-    </form>
+      <h2>Create User</h2>
+      <form id="userForm" class="mb-3" autocomplete="off">
+        <div class="mb-3">
+          <label for="userName" class="form-label">User Name</label>
+          <input type="text" class="form-control" id="userName" name="userName" required />
+        </div>
+        <div class="mb-3">
+          <label for="userEmail" class="form-label">Email</label>
+          <input type="email" class="form-control" id="userEmail" name="userEmail" required />
+        </div>
+        <div class="mb-3">
+          <label for="userPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="userPassword" name="userPassword" required />
+        </div>
+        <div class="mb-3">
+          <label for="verifyPassword" class="form-label">Verify Password</label>
+          <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required />
+        </div>
+        <div class="mb-3">
+          <label for="userRole" class="form-label">User Role</label>
+          <select class="form-select" id="userRole" name="userRole" required>
+            <option value="" disabled selected>Select role</option>
+            <option value="Admin">Admin (all role)</option>
+            <option value="Dispatch">Dispatch (Create Only)</option>
+            <option value="Technician">Tech (Create or Close Only)</option>
+            <option value="Viewer">Work Order (View Only)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create User</button>
+      </form>
     `;
   </script>
 </body>

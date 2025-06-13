@@ -1,46 +1,100 @@
 body {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
+
 .sidebar {
-    height: 100vh;
-    background: #00529B;
-    padding-top: 1.5rem;
-    min-width: 220px;
+  height: 100vh;
+  background: #00529B;
+  padding-top: 1.5rem;
+  min-width: 220px;
 }
+
 .sidebar .nav-link {
-    color: #ffffff;
-    font-weight: 500;
+  color: #ffffff;
+  font-weight: 500;
 }
+
 .sidebar .nav-link.active,
 .sidebar .nav-link:hover {
-    background: #bbdefb;
-    color: #1976d2;
-    border-radius: 8px;
+  background: #bbdefb;
+  color: #1976d2;
+  border-radius: 8px;
 }
+
 .sidebar .dropdown-menu {
-    background-color: #1565c0;
+  background-color: #1565c0;
+  position: static;
+  float: none;
+  box-shadow: none;
+  width: 100%;
+  padding-left: 1rem;
 }
+
 .sidebar .dropdown-item {
-    color: #fff;
+  color: #fff;
 }
-.sidebar .dropdown-item.active, .sidebar .dropdown-item:active, .sidebar .dropdown-item:hover {
-    background-color: #bbdefb;
-    color: #1976d2;
+
+.sidebar .dropdown-item.active,
+.sidebar .dropdown-item:active,
+.sidebar .dropdown-item:hover {
+  background-color: #bbdefb;
+  color: #1976d2;
 }
+
 .content-area {
-    padding: 2rem;
+  padding: 2rem;
 }
+
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #000000;
-    text-align: center;
-    margin-bottom: 2rem;
-    letter-spacing: 2px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
 }
+
 @media (max-width: 767px) {
-    .sidebar {
-    min-width: 100px;
-    padding-top: 0.5rem;
-    }
+  .d-flex {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .sidebar .nav-link,
+  .sidebar .dropdown-toggle {
+    font-size: 14px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .dropdown-menu {
+    position: static !important;
+    float: none;
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    box-shadow: none;
+  }
+
+  .sidebar .dropdown-menu {
+    display: none;
+  }
+
+  .sidebar .dropdown.show .dropdown-menu {
+    display: block;
+  }
 }
