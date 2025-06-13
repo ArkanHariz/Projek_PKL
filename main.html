@@ -166,6 +166,32 @@
     </form>
     `;
 
+    content["parts-create"] = `
+    <h2>Create Part</h2>
+    <form id="partsForm" class="mb-3" autocomplete="off">
+      <div class="mb-3">
+        <label for="partName" class="form-label">Part Name</label>
+        <input type="text" class="form-control" id="partName" name="partName" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="partLocation" class="form-label">Part Location</label>
+        <select class="form-select" id="partLocation" name="partLocation" required>
+          <option value="" disabled selected>Select location</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="equipmentLocation" class="form-label">Equipment - Location</label>
+        <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
+          <option value="" disabled selected>Select equipment-location</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    `;
+
     content["locations-parts-create"] = `
     <h2>Create Location Parts</h2>
     <p>Form for creating location parts.</p>
