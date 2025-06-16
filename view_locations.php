@@ -48,14 +48,16 @@ $result = $conn->query($sql);
     </thead>
     <tbody>
       <?php if ($result->num_rows > 0): ?>
-        <?php while ($row = $result->fetch_assoc()): ?>
+        <?php $no = 1; // Inisialisasi nomor urut
+        while ($row = $result->fetch_assoc()): 
+        ?>
             <tr>
-                <td><?= $row['id'] ?></td>
+                <td><?= $no++ ?></td>
                 <td><?= htmlspecialchars($row['nama_location']) ?></td>
                 <td><?= htmlspecialchars($row['keterangan']) ?></td>
                 <td>
-                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id'] ?>">Edit</button>
-                <a href="delete_location.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi ini?')" class="btn btn-sm btn-danger">Delete</a>
+                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id'] ?>">Edit</button>
+                    <a href="delete_location.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi ini?')" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
 
