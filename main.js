@@ -84,60 +84,23 @@ const content = {
     // Create Location Form
     "locations-create": `
         <h2>Create Location</h2>
-        <form id="location-form">
-            <div class="mb-3">
-                <label for="locationName" class="form-label">Locations Name</label>
-                <input type="text" class="form-control" id="locationName" name="locationName"/>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Note</label>
-                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+        <form id="location-form" action="insert_location.php" method="POST">
+        <div class="mb-3">
+            <label for="locationName" class="form-label">Locations Name</label>
+            <input type="text" class="form-control" id="locationName" name="nama_location" required />
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Note</label>
+            <textarea class="form-control" id="description" name="keterangan" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
-        <div id="location-message" class="mt-3"></div>
-
-        <script>
-            document.getElementById('location-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const name = document.getElementById('locationName').value.trim();
-                const desc = document.getElementById('description').value.trim();
-
-                if (name && desc) {
-                    const existing = JSON.parse(localStorage.getItem('locationsData') || '[]');
-                    existing.push({ name, description: desc });
-                    localStorage.setItem('locationsData', JSON.stringify(existing));
-
-                    document.getElementById('location-message').innerHTML =
-                    '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
-                    this.reset();
-                } else {
-                    document.getElementById('location-message').innerHTML =
-                    '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-                }
-            });
-        <\/script>
     `,
 
     // View Locations
     "locations-view": `
         <h2>View Locations</h2>
-        <table class="table table-striped table-bordered">
-            <thead class="table-primary">
-                <tr>
-                    <th scope="col">Number</th>
-                    <th scope="col">Locations Name</th>
-                    <th scope="col">Note</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="location-table-body">
-                <tr>
-                    <td colspan="4" class="text-center">Belum ada data lokasi.</td>
-                </tr>
-            </tbody>
-        </table>
+        <iframe src="view_locations.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
 
     // Create Parts Form
@@ -321,30 +284,30 @@ document.querySelectorAll('[data-page]').forEach(link => {
 });
 
 
-function initializeLocationForm() {
-    const form = document.getElementById('location-form');
-    if (!form) return;
+// function initializeLocationForm() {
+//     const form = document.getElementById('location-form');
+//     if (!form) return;
 
-    form.addEventListener('submit', function (e) {
-    e.preventDefault();
+//     form.addEventListener('submit', function (e) {
+//     e.preventDefault();
 
-    const name = document.getElementById('locationName').value.trim();
-    const desc = document.getElementById('description').value.trim();
+//     const name = document.getElementById('locationName').value.trim();
+//     const desc = document.getElementById('description').value.trim();
 
-    if (name && desc) {
-        const existing = JSON.parse(localStorage.getItem('locationsData') || '[]');
-        existing.push({ name, description: desc });
-        localStorage.setItem('locationsData', JSON.stringify(existing));
+//     if (name && desc) {
+//         const existing = JSON.parse(localStorage.getItem('locationsData') || '[]');
+//         existing.push({ name, description: desc });
+//         localStorage.setItem('locationsData', JSON.stringify(existing));
 
-        document.getElementById('location-message').innerHTML =
-        '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
-        this.reset();
-    } else {
-        document.getElementById('location-message').innerHTML =
-        '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-    }
-    });
-}
+//         document.getElementById('location-message').innerHTML =
+//         '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
+//         this.reset();
+//     } else {
+//         document.getElementById('location-message').innerHTML =
+//         '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+//     }
+//     });
+// }
 
 
 function initializeLocationPartsForm() {
