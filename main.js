@@ -311,6 +311,8 @@ document.querySelectorAll('[data-page]').forEach(link => {
         initializeLocationPartsForm();
     } else if (page === 'admin-create-user') {
         initializeUsersForm();
+    } else if (page === 'admin-view-user') {
+        populateUsersTable();
     }
 
     document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
@@ -383,7 +385,7 @@ function initializeUsersForm() {
     const role = document.getElementById('role').value;
 
     if (username && email && password && verifyPassword && role) {
-        const existing = JSON.parse(localstorage.getItem('usersData') || '[]');
+        const existing = JSON.parse(localStorage.getItem('usersData') || '[]');
         existing.push({ username, email, role });
         localStorage.setItem('usersData', JSON.stringify(existing));
 
