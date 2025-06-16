@@ -265,11 +265,7 @@ document.querySelectorAll('[data-page]').forEach(link => {
     document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
 
     // Jalankan script tambahan
-    if (page === 'locations-create') {
-        initializeLocationForm();
-    } else if (page === 'locations-view') {
-        populateLocationTable();
-    } else if (page === 'locations-parts-view') {
+    if (page === 'locations-parts-view') {
         populateLocationPartsTable();
     } else if (page === 'locations-parts-create') {
         initializeLocationPartsForm();
@@ -337,34 +333,6 @@ function initializeUsersForm() {
     });
 }
 
-
-function populateLocationTable() {
-    const tableBody = document.getElementById('location-table-body');
-    if (!tableBody) return;
-
-    const savedData = JSON.parse(localStorage.getItem('locationsData') || '[]');
-
-    tableBody.innerHTML = '';
-
-    if (savedData.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="3" class="text-center">Belum ada data lokasi.</td></tr>';
-    return;
-    }
-
-    savedData.forEach((loc, index) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${loc.name}</td>
-        <td>${loc.description}</td>
-        <td>
-            <button class="btn btn-sm btn-warning me-1" onclick="editLocation(${index})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteLocation(${index})">Delete</button>
-        </td>
-    `;
-    tableBody.appendChild(row);
-    });
-}
 
 function populateLocationPartsTable() {
     const tableBody = document.getElementById('location-parts-table-body');
