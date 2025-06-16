@@ -1,5 +1,6 @@
 const locationsData = [];
 const locationPartsData = [];
+const usersData = [];
 
 function addLocationToTable(name, description) {
     const tableBody = document.getElementById('location-table-body');
@@ -20,7 +21,7 @@ function addLocationToTable(name, description) {
 }
 
 const content = {
-    dashboard: `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
+    "dashboard": `<h2>Dashboard</h2><p>Welcome to the Dashboard!</p>`,
 
     // Create Equipment Form
     "equipment-create": `
@@ -125,14 +126,15 @@ const content = {
     <table class="table table-striped table-bordered">
         <thead class="table-primary">
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">No.</th>
             <th scope="col">Nama Lokasi</th>
             <th scope="col">Keterangan</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody id="location-table-body">
         <tr>
-            <td colspan="3" class="text-center">Belum ada data lokasi.</td>
+            <td colspan="4" class="text-center">Belum ada data lokasi.</td>
         </tr>
         </tbody>
     </table>
@@ -208,28 +210,6 @@ const content = {
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
     <div id="location-parts-message" class="mt-3"></div>
-
-    <script>
-        document.getElementById('location-parts-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const name = document.getElementById('locationspartsName').value.trim();
-        const desc = document.getElementById('descriptionlocationsParts').value.trim();
-
-        if (name && desc) {
-            const existing = JSON.parse(localStorage.getItem('locationPartsData') || '[]');
-            existing.push({ name, description: desc });
-            localStorage.setItem('locationPartsData', JSON.stringify(existing));
-
-            document.getElementById('location-parts-message').innerHTML =
-            '<div class="alert alert-success">Lokasi Parts "' + name + '" berhasil disimpan!</div>';
-            this.reset();
-        } else {
-            document.getElementById('location-parts-message').innerHTML =
-            '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-        }
-        });
-    <\/script>
     `,
     
     // View Location Parts
@@ -238,14 +218,15 @@ const content = {
     <table class="table table-striped table-bordered">
         <thead class="table-primary">
         <tr>
-            <th>#</th>
-            <th>Nama Lokasi</th>
-            <th>Keterangan</th>
+            <th scope="col">#</th>
+            <th scope="col">Nama Lokasi</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody id="location-parts-table-body">
         <tr>
-            <td colspan="3" class="text-center">Belum ada data lokasi parts.</td>
+            <td colspan="4" class="text-center">Belum ada data lokasi parts.</td>
         </tr>
         </tbody>
     </table>
@@ -284,40 +265,29 @@ const content = {
         <button type="submit" class="btn btn-primary">Create User</button>
     </form>
     <div id="user-message" class="mt-3"></div>
-
-    <script>
-        document.getElementById('create-user-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const username = document.getElementById('username').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const verifyPassword = document.getElementById('verifyPassword').value;
-        const role = document.getElementById('role').value;
-
-        if (!username || !email || !password || !verifyPassword || !role) {
-            document.getElementById('user-message').innerHTML =
-            '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-            return;
-        }
-
-        if (password !== verifyPassword) {
-            document.getElementById('user-message').innerHTML =
-            '<div class="alert alert-danger">Password dan verifikasi password tidak sama.</div>';
-            return;
-        }
-
-        // Simulasi penyimpanan sukses
-        document.getElementById('user-message').innerHTML =
-            '<div class="alert alert-success">User "' + username + '" berhasil dibuat dengan role "' + role + '".</div>';
-        this.reset();
-        });
-    <\/script>
     `,
 
-    "admin-view-user": `<h2>View USer</h2><p>List of all user.</p>`,
+    "admin-view-user": `
+    <h2>View User</h2>
+    <p>List of all user.</p>
+    <table class="table table-striped table-bordered">
+        <thead class="table-primary">
+        <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Username</th>
+            <th scope="col">Gmail</th>
+            <th scope="col">Role</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="user-table-body">
+        <tr>
+            <td colspan="5" class="text-center">Belum ada data user.</td>
+        </tr>
+        </tbody>
+    `,
 
-    logout: `<h2>Logout</h2><p>You have been logged out. Thank you!</p>`
+    "logout": `<h2>Logout</h2><p>You have been logged out. Thank you!</p>`
 };
 
 // Navigation click handler
@@ -339,6 +309,8 @@ document.querySelectorAll('[data-page]').forEach(link => {
         populateLocationPartsTable();
     } else if (page === 'locations-parts-create') {
         initializeLocationPartsForm();
+    } else if (page === 'admin-create-user') {
+        initializeUsersForm();
     }
 
     document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
@@ -397,6 +369,35 @@ function initializeLocationPartsForm() {
 }
 
 
+function initializeUsersForm() {
+    const form = document.getElementById('create-user-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const verifyPassword = document.getElementById('verifyPassword').value;
+    const role = document.getElementById('role').value;
+
+    if (username && email && password && verifyPassword && role) {
+        const existing = JSON.parse(localstorage.getItem('usersData') || '[]');
+        existing.push({ username, email, role });
+        localStorage.setItem('usersData', JSON.stringify(existing));
+
+        document.getElementById('user-message').innerHTML =
+        '<div class="alert alert-success">User "' + username + '" berhasil.</div>';
+        this.reset();
+    } else {
+        document.getElementById('user-message').innerHTML =
+        '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+    }
+    });
+}
+
+
 function populateLocationTable() {
     const tableBody = document.getElementById('location-table-body');
     if (!tableBody) return;
@@ -416,6 +417,10 @@ function populateLocationTable() {
         <td>${index + 1}</td>
         <td>${loc.name}</td>
         <td>${loc.description}</td>
+        <td>
+            <button class="btn btn-sm btn-warning me-1" onclick="editLocation(${index})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteLocation(${index})">Delete</button>
+        </td>
     `;
     tableBody.appendChild(row);
     });
@@ -440,6 +445,40 @@ function populateLocationPartsTable() {
         <td>${index + 1}</td>
         <td>${item.name}</td>
         <td>${item.description}</td>
+        <td>
+            <button class="btn btn-sm btn-warning me-1" onclick="editLocationParts(${index})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteLocationParts(${index})">Delete</button>
+        </td>
+    `;
+    tableBody.appendChild(row);
+    });
+}
+
+
+function populateUsersTable() {
+    const tableBody = document.getElementById('user-table-body');
+    if (!tableBody) return;
+
+    const savedData = JSON.parse(localStorage.getItem('usersData') || '[]');
+
+    tableBody.innerHTML = '';
+
+    if (savedData.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada data user.</td></tr>';
+    return;
+    }
+
+    savedData.forEach((user, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${user.username}</td>
+        <td>${user.email}</td>
+        <td>${user.role}</td>
+        <td>
+            <button class="btn btn-sm btn-warning me-1" onclick="editUser(${index})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteUser(${index})">Delete</button>
+        </td>
     `;
     tableBody.appendChild(row);
     });
