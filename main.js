@@ -284,32 +284,6 @@ document.querySelectorAll('[data-page]').forEach(link => {
 });
 
 
-// function initializeLocationForm() {
-//     const form = document.getElementById('location-form');
-//     if (!form) return;
-
-//     form.addEventListener('submit', function (e) {
-//     e.preventDefault();
-
-//     const name = document.getElementById('locationName').value.trim();
-//     const desc = document.getElementById('description').value.trim();
-
-//     if (name && desc) {
-//         const existing = JSON.parse(localStorage.getItem('locationsData') || '[]');
-//         existing.push({ name, description: desc });
-//         localStorage.setItem('locationsData', JSON.stringify(existing));
-
-//         document.getElementById('location-message').innerHTML =
-//         '<div class="alert alert-success">Lokasi "' + name + '" berhasil disimpan!</div>';
-//         this.reset();
-//     } else {
-//         document.getElementById('location-message').innerHTML =
-//         '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-//     }
-//     });
-// }
-
-
 function initializeLocationPartsForm() {
     const form = document.getElementById('location-parts-form');
     if (!form) return;
