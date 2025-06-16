@@ -1,9 +1,9 @@
 body {
-    background-color: #00529B; /* Deep Blue sebagai background utama */
+    background-color: #00529B;
     font-family: 'Segoe UI', sans-serif;
 }
 .login-card {
-    background-color: #FFFFFF; /* Putih sebagai container */
+    background-color: #FFFFFF;
     border-radius: 1rem;
     padding: 2.5rem 2rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -23,11 +23,11 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(0, 82, 155, 0.25);
 }
 .forgot-link {
-    color: #D62828; /* Crimson sebagai warna sekunder */
+    color: #D62828;
 }
 .forgot-link:hover {
     text-decoration: underline;
 }
 .footer-note {
-    color: #2E2E2E; /* Abu-abu gelap sebagai teks tambahan */
+    color: #2E2E2E;
 }
