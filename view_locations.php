@@ -54,31 +54,31 @@ $result = $conn->query($sql);
 
             <!-- Modal Edit -->
             <div class="modal fade" id="editModal<?= $row['id'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id'] ?>" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Tambahkan modal-lg -->
-                <div class="modal-content shadow rounded-3">
-                <form action="edit_location.php" method="POST">
-                    <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalLabel<?= $row['id'] ?>">Edit Locations</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                    </div>
-                    <div class="modal-body overflow-auto" style="max-height: 70vh;"> <!-- Batas tinggi agar tidak meledak -->
-                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                    <div class="mb-3">
-                        <label class="form-label">Locations Name</label>
-                        <input type="text" name="nama_location" class="form-control" value="<?= htmlspecialchars($row['nama_location']) ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Note</label>
-                        <textarea name="keterangan" class="form-control" rows="3"><?= htmlspecialchars($row['keterangan']) ?></textarea>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Save Edit</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-                </div>
-            </div>
+              <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Tambahkan modal-lg -->
+                  <div class="modal-content shadow rounded-3">
+                    <form action="edit_location.php" method="POST">
+                        <div class="modal-header bg-primary text-white">
+                          <h5 class="modal-title" id="modalLabel<?= $row['id'] ?>">Edit Locations</h5>
+                          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body overflow-auto" style="max-height: 70vh;"> <!-- Batas tinggi agar tidak meledak -->
+                          <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                          <div class="mb-3">
+                              <label class="form-label">Locations Name</label>
+                              <input type="text" name="nama_location" class="form-control" value="<?= htmlspecialchars($row['nama_location']) ?>" required>
+                          </div>
+                          <div class="mb-3">
+                              <label class="form-label">Note</label>
+                              <textarea name="keterangan" class="form-control" rows="3"><?= htmlspecialchars($row['keterangan']) ?></textarea>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success">Save Edit</button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                  </div>
+              </div>
             </div>
         <?php endwhile; ?>
       <?php else: ?>
@@ -86,7 +86,6 @@ $result = $conn->query($sql);
       <?php endif; ?>
     </tbody>
   </table>
-
 </body>
 </html>
 

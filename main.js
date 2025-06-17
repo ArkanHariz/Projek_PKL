@@ -85,15 +85,15 @@ const content = {
     "locations-create": `
         <h2>Create Location</h2>
         <form id="location-form" action="insert_location.php" method="POST">
-        <div class="mb-3">
-            <label for="locationName" class="form-label">Locations Name</label>
-            <input type="text" class="form-control" id="locationName" name="nama_location" required />
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Note</label>
-            <textarea class="form-control" id="description" name="keterangan" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+            <div class="mb-3">
+                <label for="locationName" class="form-label">Locations Name</label>
+                <input type="text" class="form-control" id="locationName" name="nama_location" required />
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Note</label>
+                <textarea class="form-control" id="description" name="keterangan" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     `,
 
@@ -161,38 +161,23 @@ const content = {
     // Create Location Parts Form
     "locations-parts-create": `
         <h2>Create Location Parts</h2>
-        <form id="location-parts-form">
+        <form id="location-parts-form" action="insert_location_parts.php" method="POST">
             <div class="mb-3">
-                <label for="locationspartsName" class="form-label">Parts Location Name</label>
-                <input type="text" class="form-control" id="locationspartsName" name="locationspartsName" required/>
+                <label for="locationspartsName" class="form-label">Parts Locations Name</label>
+                <input type="text" class="form-control" id="locationspartsName" name="nama_location_part" required />
             </div>
             <div class="mb-3">
                 <label for="descriptionlocationsParts" class="form-label">Note</label>
-                <textarea class="form-control" id="descriptionlocationsParts" name="descriptionlocationsParts" rows="3"></textarea>
+                <textarea class="form-control" id="descriptionlocationsParts" name="keterangan" rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
-        <div id="location-parts-message" class="mt-3"></div>
     `,
     
     // View Location Parts
     "locations-parts-view": `
         <h2>View Location Parts</h2>
-        <table class="table table-striped table-bordered">
-            <thead class="table-primary">
-                <tr>
-                    <th scope="col">Number</th>
-                    <th scope="col">Parts Locations Name</th>
-                    <th scope="col">Note</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="location-parts-table-body">
-                <tr>
-                    <td colspan="4" class="text-center">Belum ada data lokasi parts.</td>
-                </tr>
-            </tbody>
-        </table>
+        <iframe src="view_location_parts.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
 
     // Create Admin User Form
@@ -265,11 +250,7 @@ document.querySelectorAll('[data-page]').forEach(link => {
     document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
 
     // Jalankan script tambahan
-    if (page === 'locations-parts-view') {
-        populateLocationPartsTable();
-    } else if (page === 'locations-parts-create') {
-        initializeLocationPartsForm();
-    } else if (page === 'admin-create-user') {
+    if (page === 'admin-create-user') {
         initializeUsersForm();
     } else if (page === 'admin-view-user') {
         populateUsersTable();
@@ -278,31 +259,6 @@ document.querySelectorAll('[data-page]').forEach(link => {
     document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
     });
 });
-
-
-function initializeLocationPartsForm() {
-    const form = document.getElementById('location-parts-form');
-    if (!form) return;
-
-    form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = document.getElementById('locationspartsName').value.trim();
-    const desc = document.getElementById('descriptionlocationsParts').value.trim();
-
-    if (name && desc) {
-        const existing = JSON.parse(localStorage.getItem('locationPartsData') || '[]');
-        existing.push({ name, description: desc });
-        localStorage.setItem('locationPartsData', JSON.stringify(existing));
-
-        document.getElementById('location-parts-message').innerHTML =
-        '<div class="alert alert-success">Lokasi Parts "' + name + '" berhasil disimpan!</div>';
-        this.reset();
-    } else {
-        document.getElementById('location-parts-message').innerHTML =
-        '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-    }
-    });
-}
 
 
 function initializeUsersForm() {
@@ -330,35 +286,6 @@ function initializeUsersForm() {
         document.getElementById('user-message').innerHTML =
         '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
     }
-    });
-}
-
-
-function populateLocationPartsTable() {
-    const tableBody = document.getElementById('location-parts-table-body');
-    if (!tableBody) return;
-
-    const savedData = JSON.parse(localStorage.getItem('locationPartsData') || '[]');
-
-    tableBody.innerHTML = '';
-
-    if (savedData.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="3" class="text-center">Belum ada data lokasi parts.</td></tr>';
-    return;
-    }
-
-    savedData.forEach((item, index) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${item.name}</td>
-        <td>${item.description}</td>
-        <td>
-            <button class="btn btn-sm btn-warning me-1" onclick="editLocationParts(${index})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteLocationParts(${index})">Delete</button>
-        </td>
-    `;
-    tableBody.appendChild(row);
     });
 }
 
