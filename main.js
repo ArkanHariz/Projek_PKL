@@ -253,6 +253,8 @@ document.querySelectorAll('[data-page]').forEach(link => {
         initializeUsersForm();
     } else if (page === 'admin-view-user') {
         populateUsersTable();
+    } else if (page === 'equipment-create') {
+        populateLocationDropdown();
     }
 
     document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
@@ -317,6 +319,24 @@ function populateUsersTable() {
     tableBody.appendChild(row);
     });
 }
+
+
+function populateLocationDropdown() {
+    fetch('get_locations.php')
+        .then(response => response.json())
+        .then(data => {
+            const locationSelect = document.getElementById('location');
+            locationSelect.innerHTML = '<option value="">-- Choose Locations --</option>';
+            data.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location.id;
+                option.textContent = location.nama_location;
+                locationSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error loading locations:', error));
+}
+
 
 // Handle dropdown toggle
 document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
