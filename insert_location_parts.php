@@ -9,7 +9,7 @@ if (!empty($nama_location_part)) {
     $stmt->bind_param("ss", $nama_location_part, $keterangan);
     $stmt->execute();
     $stmt->close();
-    echo "<script>alert('Data berhasil disimpan!'); window.location.href='view_location_parts.php';</script>";
+    echo "<script>alert('Data berhasil disimpan!'); window.location.href='main.html';</script>";
 } else {
     echo "<script>alert('Nama lokasi parts wajib diisi.'); window.history.back();</script>";
 }
