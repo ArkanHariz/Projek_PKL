@@ -46,7 +46,7 @@ $result = $conn->query($sql);
                         <td><?= htmlspecialchars($row['nama_location_part']) ?></td>
                         <td><?= htmlspecialchars($row['keterangan']) ?></td>
                         <td>
-                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<? $row['id'] ?>">Edit</button>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id'] ?>">Edit</button>
                             <a href="delete_location_parts.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi parts bagian ini?')" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                     </tr>
@@ -60,7 +60,7 @@ $result = $conn->query($sql);
                                         <h5 class="modal-title" id="modalLabel<?= $row['id'] ?>">Edit Locations Parts</h5>
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
                                     </div>
-                                    <div class="modal-body overflow-auto" style="mac-height: 70vh;">
+                                    <div class="modal-body overflow-auto" style="max-height: 70vh;">
                                         <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                         <div class="mb-3">
                                             <label class="form-label">Locations Parts Name</label>
