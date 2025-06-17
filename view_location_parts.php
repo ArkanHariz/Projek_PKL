@@ -46,16 +46,16 @@ $result = $conn->query($sql);
                         <td><?= htmlspecialchars($row['nama_location_part']) ?></td>
                         <td><?= htmlspecialchars($row['keterangan']) ?></td>
                         <td>
-                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id'] ?>">Edit</button>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPartsModal<?= $row['id'] ?>">Edit</button>
                             <a href="delete_location_parts.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi parts bagian ini?')" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                     </tr>
 
                     <!-- Modal Edit -->
-                    <div class="modal fade" id="editModal<? $row['id'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id'] ?>" aria-hidden="true">
+                    <div class="modal fade" id="editPartsModal<?= $row['id'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id'] ?>" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content shadow rounded-3">">
-                                <form action="edit_location_parts.php" method="POST">">
+                            <div class="modal-content shadow rounded-3">
+                                <form action="edit_location_parts.php" method="POST">
                                     <div class="modal-header bg-primary text-white">
                                         <h5 class="modal-title" id="modalLabel<?= $row['id'] ?>">Edit Locations Parts</h5>
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
@@ -71,7 +71,7 @@ $result = $conn->query($sql);
                                             <textarea name="keterangan" class="form-control" rows="3"><?= htmlspecialchars($row['keterangan']) ?></textarea>
                                         </div>
                                     </div>
-                                    <div class="modal_footer">
+                                    <div class="modal-footer">
                                         <button type="submit" class="btn btn-success">Save Edit</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     </div>
