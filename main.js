@@ -26,7 +26,7 @@ const content = {
     // Create Equipment Form
     "equipment-create": `
         <h2>Create Equipment</h2>
-        <form id="equipment-form">
+        <form id="equipment-form" action="insert_equipment.php" method="POST">
             <div class="mb-3">
                 <label for="equipmentName" class="form-label">Equipment Name</label>
                 <input type="text" class="form-control" id="equipmentName" name="equipmentName" required />
@@ -55,30 +55,12 @@ const content = {
 
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
-        <div id="equipment-message" class="mt-3"></div>
-
-        <script>
-            document.getElementById('equipment-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const name = document.getElementById('equipmentName').value.trim();
-                const location = document.getElementById('location').value;
-                const status = document.getElementById('status').value;
-                const keterangan = document.getElementById('keterangan').value.trim();
-
-                if (name && location && status) {
-                    document.getElementById('equipment-message').innerHTML =
-                        '<div class="alert alert-success">Equipment "' + name + '" berhasil disimpan.</div>';
-                    this.reset();
-                } else {
-                    document.getElementById('equipment-message').innerHTML =
-                        '<div class="alert alert-danger">Nama, Lokasi, dan Status wajib diisi.</div>';
-                }
-            });
-        <\/script>
     `,
 
-    "equipment-view": `<h2>View Equipment</h2><p>List of all equipment.</p>`,
+    "equipment-view": `
+        <h2>View Equipment</h2>
+        <iframe src="view_equipment.php" width="100%" height="400px" frameborder="0"></iframe>
+    `,
     
     // Create Location Form
     "locations-create": `
