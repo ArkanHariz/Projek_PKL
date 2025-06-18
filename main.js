@@ -28,14 +28,14 @@ const content = {
         <h2>Create Equipment</h2>
         <form id="equipment-form" action="insert_equipment.php" method="POST">
             <div class="mb-3">
-                <label for="equipmentName" class="form-label">Equipment Name</label>
-                <input type="text" class="form-control" id="equipmentName" name="equipmentName" required />
+                <label for="nama_equipment" class="form-label">Equipment Name</label>
+                <input type="text" class="form-control" id="nama_equipment" name="nama_equipment" required />
             </div>
 
             <div class="mb-3">
-                <label for="location" class="form-label">Locations</label>
-                <select class="form-select" id="location" name="location" required>
-                    <option value="">-- Choose Locations --</option>
+                <label for="location_id" class="form-label">Equipment Locations</label>
+                <select class="form-select" id="location_id" name="location_id" required>
+                    <option value="">-- Choose Equipment Locations --</option>
                 </select>
             </div>
 
@@ -307,7 +307,7 @@ function populateLocationDropdown() {
     fetch('get_locations.php')
         .then(response => response.json())
         .then(data => {
-            const locationSelect = document.getElementById('location');
+            const locationSelect = document.getElementById('location_id');
             locationSelect.innerHTML = '<option value="">-- Choose Locations --</option>';
             data.forEach(location => {
                 const option = document.createElement('option');
