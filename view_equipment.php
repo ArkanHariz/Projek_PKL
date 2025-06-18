@@ -41,7 +41,9 @@ $result = $conn->query($sql);
 
             <tbody>
                 <?php if ($result->num_rows > 0): ?>
-                    <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+                    <?php $no = 1; 
+                    while ($row = $result->fetch_assoc()): 
+                    ?>
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= htmlspecialchars($row['nama_equipment']) ?></td>
@@ -75,8 +77,8 @@ $result = $conn->query($sql);
                                                 <input type="text" name="nama_equipment" class="form-control" value="<?= htmlspecialchars($row['nama_equipment']) ?>" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Equipment Locations</label>
-                                                <select class="form-select" name="location_id" id="location_id">
+                                                <label for="location_id" class="form-label">Equipment Locations</label>
+                                                <select class="form-select" name="location_id" id="location_id" required>
                                                     <option value="">-- Choose Equipment Location --</option>
                                                 </select>
                                             </div>
@@ -104,13 +106,37 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4" class="text-center">Belum ada data.</td>
+                        <td colspan="6" class="text-center">Belum ada data.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
     </body>
 </html>
+
+<script>
+function populateLocationDropdownEdit() {
+    fetch('get_locations.php')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('location_id');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Choose Equipment Locations --</option>';
+            data.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location.id;
+                option.textContent = location.nama_location;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading locations for edit:', error);
+        });
+}
+
+// Panggil fungsi ini saat halaman selesai dimuat
+document.addEventListener('DOMContentLoaded', populateLocationDropdownEdit);
+</script>
 
 <?php
 $conn->close();
