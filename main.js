@@ -173,7 +173,7 @@ const content = {
             <label for="role" class="form-label">User Role</label>
             <select class="form-select" id="role" name="role" required>
                 <option value="">-- Pilih Role --</option>
-                <option value="Admin">. (All Role)</option>
+                <option value="Admin">Admin (All Role)</option>
                 <option value="Dispatch">Dispatch (Create Only)</option>
                 <option value="Technician">Tech (Create or Close Only)</option>
                 <option value="Viewer">Work Order (View Only)</option>
