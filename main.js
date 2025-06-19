@@ -87,7 +87,7 @@ const content = {
     // Create Parts Form
     "parts-create": `
         <h2>Create Part</h2>
-        <form id="parts-form">
+        <form id="parts-form" action="insert_parts.php" method="POST">
             <div class="mb-3">
                 <label for="partName" class="form-label">Parts Name</label>
                 <input type="text" class="form-control" id="partName" name="partName" required />
@@ -116,7 +116,10 @@ const content = {
         </form>
     `,
 
-    "parts-view": `<h2>View Parts</h2><p>List of all parts.</p>`,
+    "parts-view": `
+        <h2>View Parts</h2>
+        <iframe src="view_parts.php" width="100%" height="400px" frameborder="0"></iframe>
+    `,
 
     // Create Location Parts Form
     "locations-parts-create": `

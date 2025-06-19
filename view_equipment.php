@@ -57,7 +57,7 @@ $result = $conn->query($sql);
                             <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEquipmentModal<?= $row['id'] ?>">
                                 Edit
                             </button>
-                            <a href="delete_equipment.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Equipment ini ?')" class="btn -btn-sm btn-danger">
+                            <a href="delete_equipment.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Equipment ini ?')" class="btn btn-sm btn-danger">
                                 Delete
                             </a>
                         </td>
