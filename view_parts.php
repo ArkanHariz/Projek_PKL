@@ -124,53 +124,6 @@ $result = $conn->query($sql);
     </body>
 </html>
 
-<script>
-function populateLocationPartsDropdowns() {
-    fetch('get_location_parts.php')
-        .then(response => response.json())
-        .then(data => {
-            document.querySelectorAll('.location-select').forEach(select => {
-                const selectedValue = select.getAttribute('data-selected');
-                select.innerHTML = '<option value="">-- Choose Parts Location --</option>';
-                data.forEach(location => {
-                    const option = document.createElement('option');
-                    option.value = location.id;
-                    option.textContent = location.nama_location_part;
-                    if (location.id === selectedValue) {
-                        option.selected = true;
-                    }
-                    select.appendChild(option);
-                });
-            });
-        });
-}
-
-function populateEquipmentLocationDropdowns() {
-    fetch('get_equipment_with_location.php')
-        .then(response => response.json())
-        .then(data => {
-            document.querySelectorAll('.equipment-location-select').forEach(select => {
-                const selectedValue = select.getAttribute('data-selected');
-                select.innerHTML = '<option value="">-- Choose Equipment - Location --</option>';
-                data.forEach(equipment => {
-                    const option = document.createElement('option');
-                    option.value = equipment.id;
-                    option.textContent = `${equipment.nama_equipment} - ${equipment.nama_location}`;
-                    if (equipment.id === selectedValue) {
-                        option.selected = true;
-                    }
-                    select.appendChild(option);
-                });
-            });
-        });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    populateLocationPartsDropdowns();
-    populateEquipmentLocationDropdowns();
-});
-</script>
-
 <?php
 $conn->close();
 ?>
