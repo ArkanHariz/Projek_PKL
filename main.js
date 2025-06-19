@@ -157,11 +157,17 @@ const content = {
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required />
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" required />
+                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">Show</button>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="verifyPassword" class="form-label">Verify Password</label>
-                <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required />
+                <div class="input-group">
+                    <input type="password" class="form-control" id="verifyPassword" name="verifyPassword" required />
+                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('verifyPassword')">Show</button>
+                </div>
             </div>
             <div class="mb-3">
             <label for="role" class="form-label">User Role</label>
@@ -256,6 +262,20 @@ function initializeUsersForm() {
     }
     });
 }
+
+
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    const button = input.nextElementSibling;
+    if (input.type === "password") {
+        input.type = "text";
+        button.textContent = "Hide";
+    } else {
+        input.type = "password";
+        button.textContent = "Show";
+    }
+}
+
 
 
 function populateUsersTable() {
