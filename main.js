@@ -26,7 +26,7 @@ const content = {
     // Create Equipment Form
     "equipment-create": `
         <h2>Create Equipment</h2>
-        <form id="equipment-form" action="insert_equipment.php" method="POST">
+        <form id="equipment-form" action="equipment/insert_equipment.php" method="POST">
             <div class="mb-3">
                 <label for="nama_equipment" class="form-label">Equipment Name</label>
                 <input type="text" class="form-control" id="nama_equipment" name="nama_equipment" required />
@@ -59,13 +59,13 @@ const content = {
 
     "equipment-view": `
         <h2>View Equipment</h2>
-        <iframe src="view_equipment.php" width="100%" height="400px" frameborder="0"></iframe>
+        <iframe src="equipment/view_equipment.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
     
     // Create Location Form
     "locations-create": `
         <h2>Create Location</h2>
-        <form id="location-form" action="insert_location.php" method="POST">
+        <form id="location-form" action="locations/insert_location.php" method="POST">
             <div class="mb-3">
                 <label for="locationName" class="form-label">Locations Name</label>
                 <input type="text" class="form-control" id="locationName" name="nama_location" required />
@@ -81,13 +81,13 @@ const content = {
     // View Locations
     "locations-view": `
         <h2>View Locations</h2>
-        <iframe src="view_locations.php" width="100%" height="400px" frameborder="0"></iframe>
+        <iframe src="locations/view_locations.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
 
     // Create Parts Form
     "parts-create": `
         <h2>Create Part</h2>
-        <form id="parts-form" action="insert_parts.php" method="POST">
+        <form id="parts-form" action="parts/insert_parts.php" method="POST">
             <div class="mb-3">
                 <label for="partName" class="form-label">Parts Name</label>
                 <input type="text" class="form-control" id="partName" name="partName" required />
@@ -118,13 +118,13 @@ const content = {
 
     "parts-view": `
         <h2>View Parts</h2>
-        <iframe src="view_parts.php" width="100%" height="400px" frameborder="0"></iframe>
+        <iframe src="parts/view_parts.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
 
     // Create Location Parts Form
     "locations-parts-create": `
         <h2>Create Location Parts</h2>
-        <form id="location-parts-form" action="insert_location_parts.php" method="POST">
+        <form id="location-parts-form" action="parts/insert_location_parts.php" method="POST">
             <div class="mb-3">
                 <label for="locationspartsName" class="form-label">Parts Locations Name</label>
                 <input type="text" class="form-control" id="locationspartsName" name="nama_location_part" required />
@@ -140,7 +140,7 @@ const content = {
     // View Location Parts
     "locations-parts-view": `
         <h2>View Location Parts</h2>
-        <iframe src="view_location_parts.php" width="100%" height="400px" frameborder="0"></iframe>
+        <iframe src="parts/view_location_parts.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
 
     // Create Admin User Form
@@ -289,7 +289,7 @@ function populateUsersTable() {
 
 
 function populateLocationDropdown() {
-    fetch('get_locations.php')
+    fetch('locations/get_locations.php')
         .then(response => response.json())
         .then(data => {
             const locationSelect = document.getElementById('location_id');
@@ -306,7 +306,7 @@ function populateLocationDropdown() {
 
 
 function populatePartsLocationDropdown() {
-    fetch('get_location_parts.php')
+    fetch('parts/get_location_parts.php')
         .then(response => response.json())
         .then(data => {
             const locationSelect = document.getElementById('location_part_id');
@@ -325,7 +325,7 @@ function populatePartsLocationDropdown() {
 
 
 function populateEquipmentLocationDropdown() {
-    fetch('get_equipment_with_location.php')
+    fetch('parts/get_equipment_with_location.php')
         .then(response => response.json())
         .then(data => {
             const select = document.getElementById('equipmentLocation');

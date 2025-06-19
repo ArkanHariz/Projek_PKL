@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config.php';
 
 $sql = "SELECT equipment.*, locations.nama_location 
         FROM equipment 
@@ -119,7 +119,7 @@ $result = $conn->query($sql);
 
 <script>
 function populateAllLocationDropdowns() {
-    fetch('get_locations.php')
+    fetch('../locations/get_locations.php')
         .then(response => response.json())
         .then(data => {
             document.querySelectorAll('.location-select').forEach(select => {

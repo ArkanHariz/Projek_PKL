@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config.php';
 
 $id = $_POST['id'];
 $nama_equipment = $_POST['nama_equipment'];
@@ -12,7 +12,6 @@ $stmt->bind_param("ssssi", $nama_equipment, $location_id, $status, $keterangan, 
 
 if ($stmt->execute()) {
     echo "<script>alert('Data berhasil diupdate'); window.location.href='view_equipment.php';</script>";
-    // echo "<script>alert('Data berhasil diupdate); window.reload();</script>";
 } else {
     echo "<script>alert('Gagal Update'); history.back();</script>";
 }

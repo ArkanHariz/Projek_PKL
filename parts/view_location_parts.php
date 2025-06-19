@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config.php';
 
 $sql = "SELECT * FROM location_parts";
 $result = $conn->query($sql);

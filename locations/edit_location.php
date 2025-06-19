@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config.php';
 
 $id = $_POST['id'];
 $nama_location = $_POST['nama_location'];
