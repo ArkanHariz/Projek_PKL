@@ -94,8 +94,8 @@ const content = {
             </div>
 
             <div class="mb-3">
-                <label for="location" class="form-label">Parts Locations</label>
-                <select class="form-select" id="location" name="location" required>
+                <label for="location_part_id" class="form-label">Parts Locations</label>
+                <select class="form-select" id="location_part_id" name="location_part_id" required>
                     <option value="">-- Choose Parts Locations --</option>
                 </select>
             </div>
@@ -114,27 +114,6 @@ const content = {
 
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
-        <div id="parts-message" class="mt-3"></div>
-
-        <script>
-            document.getElementById('parts-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const partName = document.getElementById('partName').value.trim();
-                const location = document.getElementById('location').value;
-                const equipmentLocation = document.getElementById('equipmentLocation').value;
-                const keterangan = document.getElementById('keterangan').value.trim();
-
-                if (partName && location && equipmentLocation) {
-                    document.getElementById('parts-message').innerHTML =
-                    '<div class="alert alert-success">Part "' + partName + '" berhasil disimpan.</div>';
-                    this.reset();
-                } else {
-                    document.getElementById('parts-message').innerHTML =
-                    '<div class="alert alert-danger">Semua field wajib diisi.</div>';
-                }
-            });
-        <\/script>
     `,
 
     "parts-view": `<h2>View Parts</h2><p>List of all parts.</p>`,
@@ -237,6 +216,9 @@ document.querySelectorAll('[data-page]').forEach(link => {
         populateUsersTable();
     } else if (page === 'equipment-create') {
         populateLocationDropdown();
+    } else if (page === 'parts-create') {
+        populatePartsLocationDropdown();
+        populateEquipmentLocationDropdown();
     }
 
     document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
@@ -317,6 +299,44 @@ function populateLocationDropdown() {
             });
         })
         .catch(error => console.error('Error loading locations:', error));
+}
+
+
+function populatePartsLocationDropdown() {
+    fetch('get_location_parts.php')
+        .then(response => response.json())
+        .then(data => {
+            const locationSelect = document.getElementById('location_part_id');
+            if (!locationSelect) return;
+
+            locationSelect.innerHTML = '<option value="">-- Choose Parts Locations --</option>';
+            data.forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = loc.id;
+                opt.textContent = loc.nama_location_part;
+                locationSelect.appendChild(opt);
+            });
+        })
+        .catch(error => console.error('Gagal load location_parts:', error));
+}
+
+
+function populateEquipmentLocationDropdown() {
+    fetch('get_equipment_with_location.php')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('equipmentLocation');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">-- Choose Equipment - Locations --</option>';
+            data.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.id;
+                opt.textContent = item.label;
+                select.appendChild(opt);
+            });
+        })
+        .catch(error => console.error('Gagal load equipment - location:', error));
 }
 
 
