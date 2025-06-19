@@ -335,7 +335,7 @@ function populateEquipmentLocationDropdown() {
             data.forEach(item => {
                 const opt = document.createElement('option');
                 opt.value = item.id;
-                opt.textContent = item.label;
+                opt.textContent = `${item.nama_equipment} - ${item.nama_location}`; // Ganti ini
                 select.appendChild(opt);
             });
         })
