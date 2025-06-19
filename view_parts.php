@@ -156,7 +156,7 @@ function populateEquipmentLocationDropdowns() {
                     const option = document.createElement('option');
                     option.value = equipment.id;
                     option.textContent = `${equipment.nama_equipment} - ${equipment.nama_location}`;
-                    if (equipment.id == selectedValue) {
+                    if (equipment.id === selectedValue) {
                         option.selected = true;
                     }
                     select.appendChild(option);
