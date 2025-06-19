@@ -124,6 +124,45 @@ $result = $conn->query($sql);
     </body>
 </html>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize select elements with data attributes
+    document.querySelectorAll('.location-select').forEach(function(select) {
+        const selectedValue = select.getAttribute('data-selected');
+        fetch('get_location_parts.php')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(location => {
+                    const option = document.createElement('option');
+                    option.value = location.id;
+                    option.textContent = location.nama_location_part;
+                    if (location.id == selectedValue) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            });
+    });
+
+    document.querySelectorAll('.equipment-location-select').forEach(function(select) {
+        const selectedValue = select.getAttribute('data-selected');
+        fetch('get_equipment_with_location.php')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(equipment => {
+                    const option = document.createElement('option');
+                    option.value = equipment.id;
+                    option.textContent = `${equipment.nama_equipment} - ${equipment.nama_location}`;
+                    if (equipment.id == selectedValue) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            });
+    });
+});
+</script>
+
 <?php
 $conn->close();
 ?>
