@@ -8,14 +8,14 @@ function addLocationToTable(name, description) {
 
     // Hapus baris placeholder jika ada
     if (tableBody.children.length === 1 && tableBody.children[0].cells[0].colSpan === 3) {
-    tableBody.innerHTML = '';
+        tableBody.innerHTML = '';
     }
 
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-    <td>${tableBody.children.length + 1}</td>
-    <td>${name}</td>
-    <td>${description}</td>
+        <td>${tableBody.children.length + 1}</td>
+        <td>${name}</td>
+        <td>${description}</td>
     `;
     tableBody.appendChild(newRow);
 }
@@ -70,10 +70,12 @@ const content = {
                 <label for="locationName" class="form-label">Locations Name</label>
                 <input type="text" class="form-control" id="locationName" name="nama_location" required />
             </div>
+
             <div class="mb-3">
                 <label for="description" class="form-label">Note</label>
                 <textarea class="form-control" id="description" name="keterangan" rows="3"></textarea>
             </div>
+
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     `,
@@ -129,10 +131,12 @@ const content = {
                 <label for="locationspartsName" class="form-label">Parts Locations Name</label>
                 <input type="text" class="form-control" id="locationspartsName" name="nama_location_part" required />
             </div>
+
             <div class="mb-3">
                 <label for="descriptionlocationsParts" class="form-label">Note</label>
                 <textarea class="form-control" id="descriptionlocationsParts" name="keterangan" rows="3"></textarea>
             </div>
+
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     `,
@@ -151,10 +155,12 @@ const content = {
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required />
             </div>
+
             <div class="mb-3">
                 <label for="email" class="form-label">Gmail</label>
                 <input type="email" class="form-control" id="email" name="email" required />
             </div>
+
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
@@ -162,6 +168,7 @@ const content = {
                     <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">Show</button>
                 </div>
             </div>
+
             <div class="mb-3">
                 <label for="verifyPassword" class="form-label">Verify Password</label>
                 <div class="input-group">
@@ -169,6 +176,7 @@ const content = {
                     <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('verifyPassword')">Show</button>
                 </div>
             </div>
+
             <div class="mb-3">
                 <label for="role" class="form-label">User Role</label>
                 <select class="form-select" id="role" name="role" required>
@@ -179,6 +187,7 @@ const content = {
                     <option value="Viewer">Work Order (View Only)</option>
                 </select>
             </div>
+
             <button type="submit" class="btn btn-primary">Create User</button>
         </form>
         <div id="user-message" class="mt-3"></div>
@@ -195,24 +204,24 @@ const content = {
 // Navigation click handler
 document.querySelectorAll('[data-page]').forEach(link => {
     link.addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelectorAll('.nav-link, .dropdown-item').forEach(el => el.classList.remove('active'));
-    this.classList.add('active');
+        e.preventDefault();
+        document.querySelectorAll('.nav-link, .dropdown-item').forEach(el => el.classList.remove('active'));
+        this.classList.add('active');
 
-    const page = this.getAttribute('data-page');
-    document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
+        const page = this.getAttribute('data-page');
+        document.getElementById('page-content').innerHTML = content[page] || "<h2>Not Found</h2>";
 
-    // Jalankan script tambahan
-    if (page === 'admin-create-user') {
-        initializeUsersForm();
-    } else if (page === 'equipment-create') {
-        populateLocationDropdown();
-    } else if (page === 'parts-create') {
-        populatePartsLocationDropdown();
-        populateEquipmentLocationDropdown();
-    }
+        // Jalankan script tambahan
+        if (page === 'admin-create-user') {
+            initializeUsersForm();
+        } else if (page === 'equipment-create') {
+            populateLocationDropdown();
+        } else if (page === 'parts-create') {
+            populatePartsLocationDropdown();
+            populateEquipmentLocationDropdown();
+        }
 
-    document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
+        document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('show'));
     });
 });
 
@@ -339,11 +348,11 @@ function populateEquipmentLocationDropdown() {
 // Handle dropdown toggle
 document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
     toggle.addEventListener('click', function (e) {
-    e.preventDefault();
-    const parent = this.closest('.dropdown');
-    const isShown = parent.classList.contains('show');
-    document.querySelectorAll('.sidebar .dropdown').forEach(d => d.classList.remove('show'));
-    if (!isShown) parent.classList.add('show');
+        e.preventDefault();
+        const parent = this.closest('.dropdown');
+        const isShown = parent.classList.contains('show');
+        document.querySelectorAll('.sidebar .dropdown').forEach(d => d.classList.remove('show'));
+        if (!isShown) parent.classList.add('show');
     });
 });
 
@@ -351,13 +360,13 @@ document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
 // Collapse dropdown on item click
 document.querySelectorAll('.sidebar .dropdown-menu .dropdown-item').forEach(item => {
     item.addEventListener('click', function () {
-    this.closest('.dropdown').classList.remove('show');
+        this.closest('.dropdown').classList.remove('show');
 
-    // Auto-close sidebar on mobile
-    const sidebarMenu = document.getElementById('sidebarMenu');
-    const bsCollapse = bootstrap.Collapse.getInstance(sidebarMenu) || new bootstrap.Collapse(sidebarMenu, { toggle: false });
-    if (window.innerWidth < 768 && sidebarMenu.classList.contains('show')) {
-        bsCollapse.hide();
-    }
+        // Auto-close sidebar on mobile
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const bsCollapse = bootstrap.Collapse.getInstance(sidebarMenu) || new bootstrap.Collapse(sidebarMenu, { toggle: false });
+        if (window.innerWidth < 768 && sidebarMenu.classList.contains('show')) {
+            bsCollapse.hide();
+        }
     });
 });
