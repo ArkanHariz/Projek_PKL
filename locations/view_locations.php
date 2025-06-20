@@ -1,7 +1,7 @@
 <?php
 require_once '../config.php';
 
-$sql = "SELECT * FROM locations";
+$sql = "SELECT * FROM locations ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 

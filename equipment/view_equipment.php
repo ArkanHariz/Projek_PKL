@@ -3,7 +3,8 @@ require_once '../config.php';
 
 $sql = "SELECT equipment.*, locations.nama_location 
         FROM equipment 
-        JOIN locations ON equipment.location_id = locations.id";
+        JOIN locations ON equipment.location_id = locations.id
+        ORDER BY locations.nama_location DESC";
 
 $result = $conn->query($sql);
 ?>
