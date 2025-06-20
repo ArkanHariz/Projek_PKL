@@ -1,6 +1,5 @@
 <?php
 require_once '../config.php';
-
 $sql = "SELECT * FROM locations ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
@@ -8,84 +7,105 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Locations</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .modal .form-label {
-            font-weight: 500;
-        }
-
-        .table th, .table td {
-            vertical-align: middle;
-        }
-    </style>
-
+    .edit-mode input,
+    .edit-mode textarea {
+      width: 100%;
+      font-size: 14px;
+    }
+  </style>
 </head>
-<body class="p-3">
+<body class="p-4">
+  <div class="container">
+    <form method="POST" action="edit_location.php" id="editForm">
+      <input type="hidden" name="id" id="edit-id">
+      <input type="hidden" name="nama_location" id="edit-nama-hidden">
+      <input type="hidden" name="keterangan" id="edit-keterangan-hidden">
+    </form>
 
-  <table class="table table-bordered table-striped">
-    <thead class="table-dark">
-      <tr>
-        <th>No.</th>
-        <th>Locations Name</th>
-        <th>Note</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php if ($result->num_rows > 0): ?>
-        <?php $no = 1; // Inisialisasi nomor urut
-        while ($row = $result->fetch_assoc()): 
-        ?>
-            <tr>
-                <td><?= $no++ ?></td>
-                <td><?= htmlspecialchars($row['nama_location']) ?></td>
-                <td><?= htmlspecialchars($row['keterangan']) ?></td>
-                <td>
-                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id'] ?>">Edit</button>
-                    <a href="delete_location.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi ini?')" class="btn btn-sm btn-danger">Delete</a>
-                </td>
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>No.</th>
+          <th>Location Name</th>
+          <th>Note</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <?php if ($result->num_rows > 0): ?>
+          <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+            <tr data-id="<?= $row['id'] ?>">
+              <td><?= $no++ ?></td>
+              <td class="td-nama"><?= htmlspecialchars($row['nama_location']) ?></td>
+              <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
+              <td class="td-actions">
+                <button type="button" class="btn btn-sm btn-warning" onclick="enableEdit(this)">Edit</button>
+                <a href="delete_location.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi ini?')" class="btn btn-sm btn-danger">Delete</a>
+              </td>
             </tr>
+          <?php endwhile; ?>
+        <?php else: ?>
+          <tr><td colspan="4" class="text-center">Belum ada data.</td></tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
 
-            <!-- Modal Edit -->
-            <div class="modal fade" id="editModal<?= $row['id'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id'] ?>" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Tambahkan modal-lg -->
-                  <div class="modal-content shadow rounded-3">
-                    <form action="edit_location.php" method="POST">
-                        <div class="modal-header bg-primary text-white">
-                          <h5 class="modal-title" id="modalLabel<?= $row['id'] ?>">Edit Locations</h5>
-                          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                        </div>
-                        <div class="modal-body overflow-auto" style="max-height: 70vh;"> <!-- Batas tinggi agar tidak meledak -->
-                          <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                          <div class="mb-3">
-                              <label class="form-label">Locations Name</label>
-                              <input type="text" name="nama_location" class="form-control" value="<?= htmlspecialchars($row['nama_location']) ?>" required>
-                          </div>
-                          <div class="mb-3">
-                              <label class="form-label">Note</label>
-                              <textarea name="keterangan" class="form-control" rows="3"><?= htmlspecialchars($row['keterangan']) ?></textarea>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="submit" class="btn btn-success">Save Edit</button>
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                  </div>
-              </div>
-            </div>
-        <?php endwhile; ?>
-      <?php else: ?>
-        <tr><td colspan="4" class="text-center">Belum ada data.</td></tr>
-      <?php endif; ?>
-    </tbody>
-  </table>
+  <script>
+    function enableEdit(btn) {
+      const row = btn.closest('tr');
+      const namaCell = row.querySelector('.td-nama');
+      const ketCell = row.querySelector('.td-keterangan');
+      const actionsCell = row.querySelector('.td-actions');
+      const id = row.getAttribute('data-id');
+
+      const currentNama = namaCell.textContent;
+      const currentKet = ketCell.textContent;
+
+      // Buat jadi input
+      namaCell.innerHTML = `<input type="text" class="form-control" value="${currentNama}" />`;
+      ketCell.innerHTML = `<textarea class="form-control" rows="2">${currentKet}</textarea>`;
+      actionsCell.innerHTML = `
+        <button type="button" class="btn btn-sm btn-success" onclick="saveEdit(this, '${id}')">Save</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="cancelEdit(this, '${currentNama}', '${currentKet}')">Cancel</button>
+      `;
+
+      row.classList.add('edit-mode');
+    }
+
+    function cancelEdit(btn, nama, ket) {
+      const row = btn.closest('tr');
+      row.querySelector('.td-nama').textContent = nama;
+      row.querySelector('.td-keterangan').textContent = ket;
+      row.querySelector('.td-actions').innerHTML = `
+        <button type="button" class="btn btn-sm btn-warning" onclick="enableEdit(this)">Edit</button>
+        <a href="delete_location.php?id=${row.getAttribute('data-id')}" onclick="return confirm('Hapus lokasi ini?')" class="btn btn-sm btn-danger">Delete</a>
+      `;
+      row.classList.remove('edit-mode');
+    }
+
+    function saveEdit(btn, id) {
+      const row = btn.closest('tr');
+      const newNama = row.querySelector('.td-nama input').value;
+      const newKet = row.querySelector('.td-keterangan textarea').value;
+
+      // Isi hidden input & submit
+      document.getElementById('edit-id').value = id;
+      document.getElementById('edit-nama-hidden').value = newNama;
+      document.getElementById('edit-keterangan-hidden').value = newKet;
+
+      document.getElementById('editForm').submit();
+    }
+  </script>
+
 </body>
 </html>
 

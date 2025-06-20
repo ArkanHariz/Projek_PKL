@@ -1,150 +1,151 @@
 <?php
 require_once '../config.php';
-
 $sql = "SELECT equipment.*, locations.nama_location 
         FROM equipment 
         JOIN locations ON equipment.location_id = locations.id
         ORDER BY locations.nama_location DESC";
-
 $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    <meta charset="UTF-8">
+    <title>Equipment List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
         }
-
-        .modal .form-label {
-            font-weight: 500;
-        }
-
         .table th, .table td {
             vertical-align: middle;
         }
+        .form-inline-edit input,
+        .form-inline-edit select,
+        .form-inline-edit textarea {
+            width: 100%;
+            font-size: 14px;
+        }
     </style>
 </head>
-
 <body class="p-3">
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>No.</th>
-                <th>Equipment Name</th>
-                <th>Equipment Location</th>
-                <th>Status</th>
-                <th>Note</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+<div class="container">
+<form method="POST" action="edit_equipment.php" id="editForm">
+  <input type="hidden" name="id" id="edit-id">
+  <input type="hidden" name="nama_equipment" id="edit-nama-equipment">
+  <input type="hidden" name="location_id" id="edit-location-id">
+  <input type="hidden" name="status" id="edit-status">
+  <input type="hidden" name="keterangan" id="edit-keterangan">
+</form>
 
-        <tbody>
-            <?php if ($result->num_rows > 0): ?>
-                <?php $no = 1; 
-                while ($row = $result->fetch_assoc()): 
-                ?>
-                    <tr>
-                        <td><?= $no++ ?></td>
-                        <td><?= htmlspecialchars($row['nama_equipment']) ?></td>
-                        <td><?= htmlspecialchars($row['nama_location']) ?></td>
-                        <td><?= htmlspecialchars($row['status']) ?></td>
-                        <td><?= htmlspecialchars($row['keterangan']) ?></td>
-                        <td>
-                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEquipmentModal<?= $row['id'] ?>">
-                                Edit
-                            </button>
-                            <a href="delete_equipment.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Equipment ini ?')" class="btn btn-sm btn-danger">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>No.</th>
+      <th>Equipment Name</th>
+      <th>Equipment Location</th>
+      <th>Status</th>
+      <th>Note</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php if ($result->num_rows > 0): ?>
+      <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+        <tr data-id="<?= $row['id'] ?>">
+          <td><?= $no++ ?></td>
+          <td class="td-nama_equipment"><?= htmlspecialchars($row['nama_equipment']) ?></td>
+          <td class="td-location" data-location-id="<?= $row['location_id'] ?>"><?= htmlspecialchars($row['nama_location']) ?></td>
+          <td class="td-status"><?= htmlspecialchars($row['status']) ?></td>
+          <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
+          <td class="td-actions">
+            <button type="button" class="btn btn-sm btn-warning" onclick="enableEdit(this)">Edit</button>
+            <a href="delete_equipment.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Equipment ini ?')" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <tr><td colspan="6" class="text-center">Belum ada data.</td></tr>
+    <?php endif; ?>
+  </tbody>
+</table>
+</div>
 
-                    <!-- Modal Edit -->
-                    <div class="modal fade" id="editEquipmentModal<?= $row['id'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id'] ?>" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content shadow rounded-3">
-                                <form action="edit_equipment.php" method="POST">
-                                    <div class="modal-header bg-primary text-white">
-                                        <h5 class="modal-title" id="modalLabel<?= $row['id'] ?>">Edit Equipment</h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                    </div>
+<script>
+let locationsData = [];
 
-                                    <div class="modal-body overflow-auto" style="max-height: 70vh;">
-                                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                        <div class="mb-3">
-                                            <label class="form-label">Equipment Name</label>
-                                            <input type="text" name="nama_equipment" class="form-control" value="<?= htmlspecialchars($row['nama_equipment']) ?>" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="location_id<?= $row['id'] ?>" class="form-label">Equipment Locations</label>
-                                            <select class="form-select location-select" name="location_id" id="location_id<?= $row['id'] ?>" required data-selected="<?= $row['location_id'] ?>">
-                                                <option value="">-- Choose Equipment Location --</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Status</label>
-                                            <select class="form-select" name="status" id="status">
-                                                <option value="">-- Choose Status</option>
-                                                <option value="Aktif" <?= $row['status'] == 'Aktif' ? 'selected' : '' ?>>Aktif</option>
-                                                <option value="Tidak Aktif" <?= $row['status'] == 'Tidak Aktif' ? 'selected' : '' ?>>Tidak Aktif</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Note</label>
-                                            <textarea name="keterangan" class="form-control" rows="3"><?= htmlspecialchars($row['keterangan']) ?></textarea>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success">Save Edit</button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6" class="text-center">Belum ada data.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+fetch('../locations/get_locations.php')
+  .then(response => response.json())
+  .then(data => { locationsData = data; })
+  .catch(err => console.error('Failed to load locations:', err));
+
+function enableEdit(btn) {
+  const row = btn.closest('tr');
+  const id = row.dataset.id;
+  const nama = row.querySelector('.td-nama_equipment').textContent;
+  const status = row.querySelector('.td-status').textContent;
+  const keterangan = row.querySelector('.td-keterangan').textContent;
+  const locationId = row.querySelector('.td-location').dataset.locationId;
+
+  row.querySelector('.td-nama_equipment').innerHTML = `<input type="text" class="form-control" value="${nama}">`;
+
+  let locSelect = `<select class='form-select'>`;
+  locSelect += `<option value=''>-- Choose --</option>`;
+  locationsData.forEach(loc => {
+    locSelect += `<option value='${loc.id}' ${loc.id == locationId ? 'selected' : ''}>${loc.nama_location}</option>`;
+  });
+  locSelect += `</select>`;
+  row.querySelector('.td-location').innerHTML = locSelect;
+
+  row.querySelector('.td-status').innerHTML = `
+    <select class='form-select'>
+      <option value='Aktif' ${status === 'Aktif' ? 'selected' : ''}>Aktif</option>
+      <option value='Tidak Aktif' ${status === 'Tidak Aktif' ? 'selected' : ''}>Tidak Aktif</option>
+    </select>`;
+
+  row.querySelector('.td-keterangan').innerHTML = `<textarea class='form-control' rows='2'>${keterangan}</textarea>`;
+
+  row.querySelector('.td-actions').innerHTML = `
+    <button type='button' class='btn btn-sm btn-success' onclick='saveEdit(this, ${id})'>Save</button>
+    <button type='button' class='btn btn-sm btn-secondary' onclick='cancelEdit(this, ` +
+    `\"${nama.replace(/\"/g, '&quot;')}\", \"${keterangan.replace(/\"/g, '&quot;')}\", ${locationId}, \"${status}\")'>Cancel</button>`;
+}
+
+function cancelEdit(btn, nama, ket, locationId, status) {
+  const row = btn.closest('tr');
+  const locationName = locationsData.find(l => l.id == locationId)?.nama_location || '-';
+
+  row.querySelector('.td-nama_equipment').textContent = nama;
+  row.querySelector('.td-keterangan').textContent = ket;
+  row.querySelector('.td-location').textContent = locationName;
+  row.querySelector('.td-status').textContent = status;
+
+  row.querySelector('.td-actions').innerHTML = `
+    <button type='button' class='btn btn-sm btn-warning' onclick='enableEdit(this)'>Edit</button>
+    <a href='delete_equipment.php?id=${row.dataset.id}' onclick='return confirm("Hapus Equipment ini ?")' class='btn btn-sm btn-danger'>Delete</a>`;
+}
+
+function saveEdit(btn, id) {
+  const row = btn.closest('tr');
+
+  const nama = row.querySelector('.td-nama_equipment input').value;
+  const locationId = row.querySelector('.td-location select').value;
+  const status = row.querySelector('.td-status select').value;
+  const keterangan = row.querySelector('.td-keterangan textarea').value;
+
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-nama-equipment').value = nama;
+  document.getElementById('edit-location-id').value = locationId;
+  document.getElementById('edit-status').value = status;
+  document.getElementById('edit-keterangan').value = keterangan;
+
+  document.getElementById('editForm').submit();
+}
+</script>
+
 </body>
 </html>
 
-<script>
-function populateAllLocationDropdowns() {
-    fetch('../locations/get_locations.php')
-        .then(response => response.json())
-        .then(data => {
-            document.querySelectorAll('.location-select').forEach(select => {
-                const selectedValue = select.getAttribute('data-selected');
-                select.innerHTML = '<option value="">-- Choose Equipment Locations --</option>';
-                data.forEach(location => {
-                    const option = document.createElement('option');
-                    option.value = location.id;
-                    option.textContent = location.nama_location;
-                    if (selectedValue == location.id) {
-                        option.selected = true;
-                    }
-                    select.appendChild(option);
-                });
-            });
-        })
-        .catch(error => {
-            console.error('Error loading locations for edit:', error);
-        });
-}
-
-document.addEventListener('DOMContentLoaded', populateAllLocationDropdowns);
-</script>
-
-<?php
-$conn->close();
+<?php 
+$conn->close(); 
 ?>
