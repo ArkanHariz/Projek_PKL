@@ -146,7 +146,7 @@ const content = {
     // Create Admin User Form
     "admin-create-user": `
         <h2>Create User</h2>
-        <form id="create-user-form">
+        <form id="create-user-form" action="users/insert_users.php" method="POST>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required />
@@ -170,14 +170,14 @@ const content = {
                 </div>
             </div>
             <div class="mb-3">
-            <label for="role" class="form-label">User Role</label>
-            <select class="form-select" id="role" name="role" required>
-                <option value="">-- Pilih Role --</option>
-                <option value="Admin">Admin (All Role)</option>
-                <option value="Dispatch">Dispatch (Create Only)</option>
-                <option value="Technician">Tech (Create or Close Only)</option>
-                <option value="Viewer">Work Order (View Only)</option>
-            </select>
+                <label for="role" class="form-label">User Role</label>
+                <select class="form-select" id="role" name="role" required>
+                    <option value="">-- Pilih Role --</option>
+                    <option value="Admin">Admin (All Role)</option>
+                    <option value="Dispatch">Dispatch (Create Only)</option>
+                    <option value="Technician">Tech (Create or Close Only)</option>
+                    <option value="Viewer">Work Order (View Only)</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Create User</button>
         </form>
@@ -186,23 +186,7 @@ const content = {
 
     "admin-view-user": `
         <h2>View User</h2>
-        <p>List of all user.</p>
-        <table class="table table-striped table-bordered">
-            <thead class="table-primary">
-                <tr>
-                    <th scope="col">Number</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Gmail</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="user-table-body">
-                <tr>
-                    <td colspan="5" class="text-center">Belum ada data user.</td>
-                </tr>
-            </tbody>
-        </table>
+        <iframe src="users/view_users.php" width="100%" height="400px" frameborder="0"></iframe>
     `,
 
     "logout": `<h2>Logout</h2><p>You have been logged out. Thank you!</p>`
@@ -240,26 +224,48 @@ function initializeUsersForm() {
     if (!form) return;
 
     form.addEventListener('submit', function (e) {
-    e.preventDefault();
+        e.preventDefault();
 
-    const username = document.getElementById('username').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const verifyPassword = document.getElementById('verifyPassword').value;
-    const role = document.getElementById('role').value;
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const verifyPassword = document.getElementById('verifyPassword').value;
+        const role = document.getElementById('role').value;
 
-    if (username && email && password && verifyPassword && role) {
-        const existing = JSON.parse(localStorage.getItem('usersData') || '[]');
-        existing.push({ username, email, role });
-        localStorage.setItem('usersData', JSON.stringify(existing));
+        if (!username || !email || !password || !verifyPassword || !role) {
+            document.getElementById('user-message').innerHTML =
+                '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
+            return;
+        }
 
-        document.getElementById('user-message').innerHTML =
-        '<div class="alert alert-success">User "' + username + '" berhasil.</div>';
-        this.reset();
-    } else {
-        document.getElementById('user-message').innerHTML =
-        '<div class="alert alert-danger">Semua kolom wajib diisi.</div>';
-    }
+        if (password !== verifyPassword) {
+            document.getElementById('user-message').innerHTML =
+                '<div class="alert alert-danger">Password tidak cocok.</div>';
+            return;
+        }
+
+        // Tidak menyimpan verifyPassword
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("role", role);
+
+        fetch("users/insert_users.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(result => {
+            document.getElementById('user-message').innerHTML =
+                '<div class="alert alert-success">User berhasil dibuat.</div>';
+            form.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('user-message').innerHTML =
+                '<div class="alert alert-danger">Terjadi kesalahan.</div>';
+        });
     });
 }
 
@@ -275,7 +281,6 @@ function togglePassword(fieldId) {
         button.textContent = "Show";
     }
 }
-
 
 
 function populateUsersTable() {
