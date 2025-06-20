@@ -1,5 +1,16 @@
 <?php
 require_once '../config.php';
+
+function getRoleLabel($role) {
+    return match($role) {
+        'Admin' => 'Admin (All Role)',
+        'Dispatch' => 'Dispatch (Create Only)',
+        'Technician' => 'Tech (Create or Close Only)',
+        'Viewer' => 'Work Order (View Only)',
+        default => $role
+    };
+}
+
 $sql = "SELECT * FROM users";
 $result = $conn->query($sql);
 ?>
@@ -45,7 +56,7 @@ $result = $conn->query($sql);
           <td><?= $no++ ?></td>
           <td class="td-username"><?= htmlspecialchars($row['username']) ?></td>
           <td class="td-email"><?= htmlspecialchars($row['email']) ?></td>
-          <td class="td-role"><?= htmlspecialchars($row['role']) ?></td>
+          <td class="td-role" data-value="<?= $row['role'] ?>"><?= getRoleLabel($row['role']) ?></td>
           <td class="td-actions">
             <button type="button" class="btn btn-sm btn-warning" onclick="enableEdit(this)">Edit</button>
             <a href="delete_users.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus users ini ?')" class="btn btn-sm btn-danger">Delete</a>
@@ -65,7 +76,7 @@ function enableEdit(btn) {
   const id = row.dataset.id;
   const username = row.querySelector('.td-username').textContent;
   const email = row.querySelector('.td-email').textContent;
-  const role = row.querySelector('.td-role').textContent;
+  const role = row.querySelector('.td-role').dataset.value;
 
   row.querySelector('.td-username').innerHTML = `<input type='text' class='form-control' value='${username}'>`;
   row.querySelector('.td-email').innerHTML = `<input type='email' class='form-control' value='${email}'>`;
@@ -73,8 +84,8 @@ function enableEdit(btn) {
     <select class='form-select'>
       <option value='Admin' ${role === 'Admin' ? 'selected' : ''}>Admin (All Role)</option>
       <option value='Dispatch' ${role === 'Dispatch' ? 'selected' : ''}>Dispatch (Create Only)</option>
-      <option value='Tech' ${role === 'Tech' ? 'selected' : ''}>Tech (Create or Close Only)</option>
-      <option value='Work Order' ${role === 'Work Order' ? 'selected' : ''}>Work Order (View Only)</option>
+      <option value='Technician' ${role === 'Technician' ? 'selected' : ''}>Tech (Create or Close Only)</option>
+      <option value='Viewer' ${role === 'Viewer' ? 'selected' : ''}>Work Order (View Only)</option>
     </select>`;
 
   row.querySelector('.td-actions').innerHTML = `
