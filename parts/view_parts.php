@@ -60,7 +60,7 @@ $result = $conn->query($sql);
                             <td><?= $no++ ?></td>
                             <td><?= htmlspecialchars($row['nama_part']) ?></td>
                             <td><?= htmlspecialchars($row['nama_location_part']) ?></td>
-                            <td><?= htmlspecialchars($row['nama_equipment']) ?></td>
+                            <td><?= htmlspecialchars($row['nama_equipment'].' - '.$row['nama_location']) ?></td>
                             <td><?= htmlspecialchars($row['keterangan']) ?></td>
                             <td>
                                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPartsModal<?= $row['id'] ?>">
