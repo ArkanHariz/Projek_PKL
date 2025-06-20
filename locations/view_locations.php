@@ -1,6 +1,18 @@
 <?php
 require_once '../config.php';
-$sql = "SELECT * FROM locations ORDER BY id DESC";
+
+// Pagination logic
+$limit = 5; // jumlah data per halaman
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Hitung total data
+$totalResult = $conn->query("SELECT COUNT(*) AS total FROM locations");
+$totalRows = $totalResult->fetch_assoc()['total'];
+$totalPages = ceil($totalRows / $limit);
+
+// Ambil data halaman ini
+$sql = "SELECT * FROM locations ORDER BY id DESC LIMIT $limit OFFSET $offset";
 $result = $conn->query($sql);
 ?>
 
@@ -14,7 +26,6 @@ $result = $conn->query($sql);
     body {
       font-family: 'Segoe UI', sans-serif;
     }
-
     .edit-mode input,
     .edit-mode textarea {
       width: 100%;
@@ -41,7 +52,7 @@ $result = $conn->query($sql);
       </thead>
       <tbody id="tableBody">
         <?php if ($result->num_rows > 0): ?>
-          <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+          <?php $no = $offset + 1; while ($row = $result->fetch_assoc()): ?>
             <tr data-id="<?= $row['id'] ?>">
               <td><?= $no++ ?></td>
               <td class="td-nama"><?= htmlspecialchars($row['nama_location']) ?></td>
@@ -57,6 +68,23 @@ $result = $conn->query($sql);
         <?php endif; ?>
       </tbody>
     </table>
+
+    <!-- Pagination Controls -->
+    <nav>
+      <ul class="pagination justify-content-center">
+        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+          <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+        </li>
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+          <li class="page-item <?= $page == $i ? 'active' : '' ?>">
+            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+          </li>
+        <?php endfor; ?>
+        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+          <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 
   <script>
@@ -70,14 +98,12 @@ $result = $conn->query($sql);
       const currentNama = namaCell.textContent;
       const currentKet = ketCell.textContent;
 
-      // Buat jadi input
       namaCell.innerHTML = `<input type="text" class="form-control" value="${currentNama}" />`;
       ketCell.innerHTML = `<textarea class="form-control" rows="2">${currentKet}</textarea>`;
       actionsCell.innerHTML = `
         <button type="button" class="btn btn-sm btn-success" onclick="saveEdit(this, '${id}')">Save</button>
         <button type="button" class="btn btn-sm btn-secondary" onclick="cancelEdit(this, '${currentNama}', '${currentKet}')">Cancel</button>
       `;
-
       row.classList.add('edit-mode');
     }
 
@@ -97,7 +123,6 @@ $result = $conn->query($sql);
       const newNama = row.querySelector('.td-nama input').value;
       const newKet = row.querySelector('.td-keterangan textarea').value;
 
-      // Isi hidden input & submit
       document.getElementById('edit-id').value = id;
       document.getElementById('edit-nama-hidden').value = newNama;
       document.getElementById('edit-keterangan-hidden').value = newKet;
