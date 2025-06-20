@@ -137,9 +137,6 @@ const content = {
         <div class="fade-in">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2><i class="fas fa-list"></i> Locations List</h2>
-                <a href="#" class="btn btn-primary btn-sm" data-page="locations-create">
-                    <i class="fas fa-plus"></i> Add Location
-                </a>
             </div>
             <iframe src="locations/view_locations.php" width="100%" height="600px" class="rounded shadow"></iframe>
         </div>
@@ -189,9 +186,6 @@ const content = {
         <div class="fade-in">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2><i class="fas fa-list"></i> Parts List</h2>
-                <a href="#" class="btn btn-primary btn-sm" data-page="parts-create">
-                    <i class="fas fa-plus"></i> Add Part
-                </a>
             </div>
             <iframe src="parts/view_parts.php" width="100%" height="600px" class="rounded shadow"></iframe>
         </div>
@@ -227,9 +221,6 @@ const content = {
         <div class="fade-in">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2><i class="fas fa-list"></i> Location Parts List</h2>
-                <a href="#" class="btn btn-primary btn-sm" data-page="locations-parts-create">
-                    <i class="fas fa-plus"></i> Add Location Parts
-                </a>
             </div>
             <iframe src="parts/view_location_parts.php" width="100%" height="600px" class="rounded shadow"></iframe>
         </div>
@@ -298,9 +289,6 @@ const content = {
         <div class="fade-in">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2><i class="fas fa-users"></i> User Management</h2>
-                <a href="#" class="btn btn-primary btn-sm" data-page="admin-create-user">
-                    <i class="fas fa-user-plus"></i> Add User
-                </a>
             </div>
             <iframe src="users/view_users.php" width="100%" height="600px" class="rounded shadow"></iframe>
         </div>
