@@ -205,8 +205,6 @@ document.querySelectorAll('[data-page]').forEach(link => {
     // Jalankan script tambahan
     if (page === 'admin-create-user') {
         initializeUsersForm();
-    } else if (page === 'admin-view-user') {
-        populateUsersTable();
     } else if (page === 'equipment-create') {
         populateLocationDropdown();
     } else if (page === 'parts-create') {
@@ -283,36 +281,6 @@ function togglePassword(fieldId) {
 }
 
 
-function populateUsersTable() {
-    const tableBody = document.getElementById('user-table-body');
-    if (!tableBody) return;
-
-    const savedData = JSON.parse(localStorage.getItem('usersData') || '[]');
-
-    tableBody.innerHTML = '';
-
-    if (savedData.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada data user.</td></tr>';
-    return;
-    }
-
-    savedData.forEach((user, index) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${user.username}</td>
-        <td>${user.email}</td>
-        <td>${user.role}</td>
-        <td>
-            <button class="btn btn-sm btn-warning me-1" onclick="editUser(${index})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteUser(${index})">Delete</button>
-        </td>
-    `;
-    tableBody.appendChild(row);
-    });
-}
-
-
 function populateLocationDropdown() {
     fetch('locations/get_locations.php')
         .then(response => response.json())
@@ -378,6 +346,7 @@ document.querySelectorAll('.sidebar .dropdown-toggle').forEach(toggle => {
     if (!isShown) parent.classList.add('show');
     });
 });
+
 
 // Collapse dropdown on item click
 document.querySelectorAll('.sidebar .dropdown-menu .dropdown-item').forEach(item => {
