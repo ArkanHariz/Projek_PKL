@@ -1,12 +1,16 @@
-body, html {
+/* Layout dasar */
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
+.d-flex {
+  min-height: 100vh;
+}
+
 .sidebar {
-  height: 100vh;
   background: #00529B;
   padding-top: 1.5rem;
   min-width: 220px;
@@ -51,8 +55,7 @@ body, html {
 
 .content-area {
   padding: 2rem;
-  overflow: visible;
-  flex: 1;
+  width: 100%;
 }
 
 .logo {
@@ -64,6 +67,7 @@ body, html {
   letter-spacing: 2px;
 }
 
+/* Responsive layout */
 @media (max-width: 767px) {
   .d-flex {
     flex-direction: column;
@@ -71,7 +75,6 @@ body, html {
 
   .sidebar {
     width: 100%;
-    min-width: unset;
     height: auto;
     padding: 1rem;
   }

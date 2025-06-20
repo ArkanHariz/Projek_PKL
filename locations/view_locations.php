@@ -1,17 +1,14 @@
 <?php
 require_once '../config.php';
 
-// Pagination logic
-$limit = 5; // jumlah data per halaman
+$limit = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-// Hitung total data
 $totalResult = $conn->query("SELECT COUNT(*) AS total FROM locations");
 $totalRows = $totalResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 
-// Ambil data halaman ini
 $sql = "SELECT * FROM locations ORDER BY id DESC LIMIT $limit OFFSET $offset";
 $result = $conn->query($sql);
 ?>
@@ -26,10 +23,21 @@ $result = $conn->query($sql);
     body {
       font-family: 'Segoe UI', sans-serif;
     }
+
     .edit-mode input,
     .edit-mode textarea {
       width: 100%;
       font-size: 14px;
+    }
+
+    .container {
+      max-width: 100%;
+      overflow: visible !important;
+    }
+
+    table {
+      table-layout: auto;
+      width: 100%;
     }
   </style>
 </head>
@@ -69,7 +77,6 @@ $result = $conn->query($sql);
       </tbody>
     </table>
 
-    <!-- Pagination Controls -->
     <nav>
       <ul class="pagination justify-content-center">
         <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
@@ -130,7 +137,6 @@ $result = $conn->query($sql);
       document.getElementById('editForm').submit();
     }
   </script>
-
 </body>
 </html>
 
