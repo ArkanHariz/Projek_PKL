@@ -3,69 +3,189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CMMS</title>
+  <title>CMMS - Dover Chemical</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <div class="d-flex flex-md-row min-vh-100">
-    <!-- Toggle Button for Mobile -->
-    <button class="btn btn-light d-md-none m-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      ☰ Menu
-    </button>
+  <div class="app-container">
+    <!-- Mobile Header -->
+    <div class="mobile-header d-lg-none">
+      <div class="mobile-header-content">
+        <button class="mobile-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">
+          <img src="assets/the_dovechem_group_logo.jpg" alt="Dover Chemical" class="logo-img">
+          <span>CMMS</span>
+        </div>
+        <div class="mobile-user">
+          <i class="fas fa-user-circle"></i>
+        </div>
+      </div>
+    </div>
 
     <!-- Sidebar -->
-    <nav class="sidebar collapse d-md-flex flex-column flex-shrink-0 p-3" id="sidebarMenu">
-      <div class="logo mb-4">Dover Chemical</div>
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-          <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
-        </li>
+    <div class="offcanvas-lg offcanvas-start sidebar-container" tabindex="-1" id="sidebarOffcanvas">
+      <div class="offcanvas-header d-lg-none">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas"></button>
+      </div>
+      
+      <nav class="sidebar" id="sidebarMenu">
+        <!-- Logo Section -->
+        <div class="sidebar-header">
+          <div class="logo-container">
+            <img src="assets/the_dovechem_group_logo.jpg" alt="Dover Chemical" class="logo-img">
+            <div class="logo-text">
+              <h4>Dover Chemical</h4>
+              <span>CMMS System</span>
+            </div>
+          </div>
+        </div>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button">Equipment</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item nav-link" href="#" data-page="equipment-create">Create</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="equipment-view">View</a></li>
+        <!-- Navigation Menu -->
+        <div class="sidebar-menu">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a href="#" class="nav-link active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button">
+                <i class="fas fa-cogs"></i>
+                <span>Equipment</span>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-page="equipment-create">
+                  <i class="fas fa-plus-circle"></i> Create Equipment
+                </a></li>
+                <li><a class="dropdown-item" href="#" data-page="equipment-view">
+                  <i class="fas fa-list"></i> View Equipment
+                </a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="locationsDropdown" role="button">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Locations</span>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-page="locations-create">
+                  <i class="fas fa-plus-circle"></i> Create Location
+                </a></li>
+                <li><a class="dropdown-item" href="#" data-page="locations-view">
+                  <i class="fas fa-list"></i> View Locations
+                </a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="partsDropdown" role="button">
+                <i class="fas fa-puzzle-piece"></i>
+                <span>Parts</span>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-page="parts-create">
+                  <i class="fas fa-plus-circle"></i> Create Parts
+                </a></li>
+                <li><a class="dropdown-item" href="#" data-page="parts-view">
+                  <i class="fas fa-list"></i> View Parts
+                </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" data-page="locations-parts-create">
+                  <i class="fas fa-plus-circle"></i> Create Location Parts
+                </a></li>
+                <li><a class="dropdown-item" href="#" data-page="locations-parts-view">
+                  <i class="fas fa-list"></i> View Location Parts
+                </a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button">
+                <i class="fas fa-users-cog"></i>
+                <span>Administration</span>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-page="admin-create-user">
+                  <i class="fas fa-user-plus"></i> Create User
+                </a></li>
+                <li><a class="dropdown-item" href="#" data-page="admin-view-user">
+                  <i class="fas fa-users"></i> View Users
+                </a></li>
+              </ul>
+            </li>
           </ul>
-        </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="locationsDropdown" role="button">Locations</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item nav-link" href="#" data-page="locations-create">Create</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="locations-view">View</a></li>
-          </ul>
-        </li>
+          <!-- Logout Button -->
+          <div class="sidebar-footer">
+            <a href="#" class="nav-link logout-btn" data-page="logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="partsDropdown" role="button">Parts</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item nav-link" href="#" data-page="parts-create">Create Parts</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="parts-view">View Parts</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="locations-parts-create">Create Location Parts</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="locations-parts-view">View Location Parts</a></li>
-          </ul>
-        </li>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="content-header">
+        <div class="breadcrumb-container">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i> Home</a></li>
+              <li class="breadcrumb-item active" id="current-page">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button">Admin</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item nav-link" href="#" data-page="admin-create-user">Create User</a></li>
-            <li><a class="dropdown-item nav-link" href="#" data-page="admin-view-user">View User</a></li>
-          </ul>
-        </li>
-
-        <li>
-          <a href="#" class="nav-link text-danger" data-page="logout">Logout</a>
-        </li>
-      </ul>
-    </nav>
-
-    <!-- Content Area -->
-    <div class="content-area d-flex flex-column" id="page-content">
-      <h2>Dashboard</h2>
-      <p>Welcome to the Dashboard!</p>
+      <div class="content-body" id="page-content">
+        <div class="dashboard-container">
+          <div class="welcome-card">
+            <div class="welcome-content">
+              <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+              <p class="lead">Welcome to Dover Chemical CMMS System</p>
+              <p>Manage your equipment, locations, parts, and users efficiently.</p>
+            </div>
+            <div class="welcome-stats">
+              <div class="stat-card">
+                <i class="fas fa-cogs"></i>
+                <div>
+                  <h3>Equipment</h3>
+                  <p>Manage Assets</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                  <h3>Locations</h3>
+                  <p>Track Places</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-puzzle-piece"></i>
+                <div>
+                  <h3>Parts</h3>
+                  <p>Inventory Control</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
