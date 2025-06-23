@@ -1,0 +1,59 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8f9fa;
+}
+
+.edit-mode input,
+.edit-mode select,
+.edit-mode textarea {
+    width: 100%;
+    font-size: 14px;
+}
+
+.table-container {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    overflow: visible !important;
+}
+
+table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.table th {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+    border-color: #e9ecef;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.pagination .page-link {
+    border-radius: 8px;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+    color: #f093fb;
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-color: #f093fb;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    border-color: #f093fb;
+}

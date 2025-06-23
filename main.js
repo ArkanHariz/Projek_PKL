@@ -118,7 +118,7 @@ const content = {
     <div class="fade-in">
       <div class="iframe-container">
         <h4>
-          <i class="fas fa-list text-success"></i>
+          <i class="fas fa-list text-info"></i>
           Locations List
         </h4>
         <iframe src="locations/view_locations.php" width="100%" height="600px"></iframe>
@@ -175,7 +175,7 @@ const content = {
     <div class="fade-in">
       <div class="iframe-container">
         <h4>
-          <i class="fas fa-list text-warning"></i>
+          <i class="fas fa-list text-info"></i>
           Parts List
         </h4>
         <iframe src="parts/view_parts.php" width="100%" height="600px"></iframe>
