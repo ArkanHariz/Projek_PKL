@@ -19,74 +19,7 @@ $result = $conn->query($sql);
   <meta charset="UTF-8">
   <title>Locations</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f8f9fa;
-    }
-
-    .edit-mode input,
-    .edit-mode textarea {
-      width: 100%;
-      font-size: 14px;
-    }
-
-    .table-container {
-      background: white;
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
-    }
-
-    .pagination-container {
-      background: white;
-      border-radius: 15px;
-      padding: 1.5rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: center;
-    }
-
-    table {
-      table-layout: auto;
-      width: 100%;
-    }
-
-    .table th {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      font-weight: 600;
-    }
-
-    .table td {
-      vertical-align: middle;
-      border-color: #e9ecef;
-    }
-
-    .btn {
-      border-radius: 8px;
-      font-weight: 500;
-    }
-
-    .pagination .page-link {
-      border-radius: 8px;
-      margin: 0 2px;
-      border: 1px solid #dee2e6;
-      color: #667eea;
-    }
-
-    .pagination .page-item.active .page-link {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-color: #667eea;
-    }
-
-    .pagination .page-link:hover {
-      background-color: #f8f9fa;
-      border-color: #667eea;
-    }
-  </style>
+  <link rel="stylesheet" href="view_locations.css" />
 </head>
 <body class="p-4">
   <div class="container-fluid">
