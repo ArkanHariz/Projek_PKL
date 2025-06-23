@@ -139,7 +139,7 @@ body {
   }
 }
 
-/* Left Side - Branding */
+/* Left Side - Logo Only */
 .login-branding {
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   color: white;
@@ -147,6 +147,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
 }
@@ -165,81 +166,53 @@ body {
 .branding-content {
   position: relative;
   z-index: 2;
+  text-align: center;
 }
 
 .logo-section {
-  text-align: center;
-  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
 }
 
 .company-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
   object-fit: cover;
-  margin-bottom: 1.5rem;
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  display: block;
 }
 
 .company-info h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1.2;
 }
 
 .company-info p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   opacity: 0.9;
   font-weight: 400;
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.feature-item:last-child {
-  margin-bottom: 0;
-}
-
-.feature-item:hover {
-  transform: translateX(10px);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.feature-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-.feature-text h4 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.feature-text p {
-  font-size: 0.9rem;
-  opacity: 0.8;
   line-height: 1.4;
+  max-width: 300px;
 }
 
 /* Right Side - Login Form */
@@ -683,15 +656,19 @@ body {
 
   .login-branding {
     padding: 2rem;
-    text-align: center;
-  }
-
-  .features-list {
-    display: none;
   }
 
   .company-info h1 {
-    font-size: 1.5rem;
+    font-size: 2rem;
+  }
+
+  .company-info p {
+    font-size: 1rem;
+  }
+
+  .company-logo {
+    width: 100px;
+    height: 100px;
   }
 
   .notification-container {
@@ -729,6 +706,19 @@ body {
   body {
     overflow-y: auto;
   }
+
+  .company-info h1 {
+    font-size: 1.8rem;
+  }
+
+  .logo-container {
+    padding: 1rem;
+  }
+
+  .company-logo {
+    width: 80px;
+    height: 80px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -745,8 +735,16 @@ body {
   }
 
   .company-logo {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
+  }
+
+  .company-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .company-info p {
+    font-size: 0.9rem;
   }
 
   .form-options {
