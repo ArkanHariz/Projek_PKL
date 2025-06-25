@@ -36,9 +36,9 @@ const content = {
               <input type="text" class="form-control" id="nama_equipment" name="nama_equipment" required placeholder="Enter equipment name" />
             </div>
             <div class="col-md-6">
-              <label for="location_id" class="form-label">Equipment Location</label>
+              <label for="location_id" class="form-label">Equipment Locations</label>
               <select class="form-select" id="location_id" name="location_id" required>
-                <option value="">-- Choose Equipment Location --</option>
+                <option value="">-- Choose Equipment Locations --</option>
               </select>
             </div>
             <div class="col-md-6">
@@ -86,13 +86,13 @@ const content = {
       <div class="form-container">
         <h4>
           <i class="fas fa-plus-circle text-success"></i>
-          Create Location
+          Create Locations
         </h4>
         <form id="location-form" action="locations/insert_location.php" method="POST">
           <div class="row g-4">
             <div class="col-md-8">
-              <label for="locationName" class="form-label">Location Name</label>
-              <input type="text" class="form-control" id="locationName" name="nama_location" required placeholder="Enter location name" />
+              <label for="locationName" class="form-label">Locations Name</label>
+              <input type="text" class="form-control" id="locationName" name="nama_location" required placeholder="Enter locations name" />
             </div>
             <div class="col-12">
               <label for="description" class="form-label">Description</label>
@@ -131,24 +131,24 @@ const content = {
       <div class="form-container">
         <h4>
           <i class="fas fa-plus-circle text-info"></i>
-          Create Part
+          Create Parts
         </h4>
         <form id="parts-form" action="parts/insert_parts.php" method="POST">
           <div class="row g-4">
             <div class="col-md-6">
-              <label for="partName" class="form-label">Part Name</label>
-              <input type="text" class="form-control" id="partName" name="partName" required placeholder="Enter part name" />
+              <label for="partName" class="form-label">Parts Name</label>
+              <input type="text" class="form-control" id="partName" name="partName" required placeholder="Enter parts name" />
             </div>
             <div class="col-md-6">
-              <label for="location_part_id" class="form-label">Parts Location</label>
+              <label for="location_part_id" class="form-label">Parts Locations</label>
               <select class="form-select" id="location_part_id" name="location_part_id" required>
                 <option value="">-- Choose Parts Location --</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label for="equipmentLocation" class="form-label">Equipment - Location</label>
+              <label for="equipmentLocation" class="form-label">Equipment - Locations</label>
               <select class="form-select" id="equipmentLocation" name="equipmentLocation" required>
-                <option value="">-- Choose Equipment - Location --</option>
+                <option value="">-- Choose Equipment - Locations --</option>
               </select>
             </div>
             <div class="col-md-6">
@@ -188,12 +188,12 @@ const content = {
       <div class="form-container">
         <h4>
           <i class="fas fa-plus-circle text-info"></i>
-          Create Location Parts
+          Create Locations Parts
         </h4>
         <form id="location-parts-form" action="parts/insert_location_parts.php" method="POST">
           <div class="row g-4">
             <div class="col-md-8">
-              <label for="locationspartsName" class="form-label">Parts Location Name</label>
+              <label for="locationspartsName" class="form-label">Parts Locations Name</label>
               <input type="text" class="form-control" id="locationspartsName" name="nama_location_part" required placeholder="Enter parts location name" />
             </div>
             <div class="col-12">
@@ -221,7 +221,7 @@ const content = {
       <div class="iframe-container">
         <h4>
           <i class="fas fa-list text-info"></i>
-          Location Parts List
+          Locations Parts List
         </h4>
         <iframe src="parts/view_location_parts.php" width="100%" height="600px"></iframe>
       </div>
@@ -233,7 +233,7 @@ const content = {
       <div class="form-container">
         <h4>
           <i class="fas fa-user-plus text-primary"></i>
-          Create User
+          Create Users
         </h4>
         <form id="create-user-form" action="users/insert_users.php" method="POST">
           <div class="row g-4">
@@ -264,7 +264,7 @@ const content = {
               </div>
             </div>
             <div class="col-md-6">
-              <label for="role" class="form-label">User Role</label>
+              <label for="role" class="form-label">Users Role</label>
               <select class="form-select" id="role" name="role" required>
                 <option value="">-- Select Role --</option>
                 <option value="Admin">Admin (All Permissions)</option>
@@ -295,7 +295,7 @@ const content = {
       <div class="iframe-container">
         <h4>
           <i class="fas fa-users text-primary"></i>
-          User Management
+          Users Management
         </h4>
         <iframe src="users/view_users.php" width="100%" height="600px"></iframe>
       </div>

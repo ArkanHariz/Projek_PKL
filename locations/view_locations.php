@@ -35,7 +35,7 @@ $result = $conn->query($sql);
         <thead>
           <tr>
             <th style="width: 10%">No.</th>
-            <th style="width: 30%">Location Name</th>
+            <th style="width: 30%">Locations Name</th>
             <th style="width: 40%">Note</th>
             <th style="width: 20%">Actions</th>
           </tr>

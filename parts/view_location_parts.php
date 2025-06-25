@@ -17,7 +17,7 @@ $result = $conn->query($sql);
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Location Parts</title>
+  <title>Locations Parts</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="view_location_parts.css"></link>
 </head>
@@ -34,7 +34,7 @@ $result = $conn->query($sql);
       <thead>
         <tr>
           <th style="width: 10%">No.</th>
-          <th style="width: 35%">Location Parts Name</th>
+          <th style="width: 35%">Locations Parts Name</th>
           <th style="width: 35%">Note</th>
           <th style="width: 20%">Actions</th>
         </tr>
