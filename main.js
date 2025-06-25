@@ -96,7 +96,7 @@ const content = {
             </div>
             <div class="col-12">
               <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" name="keterangan" rows="4" placeholder="Location description (optional)"></textarea>
+              <textarea class="form-control" id="description" name="keterangan" rows="4" placeholder="Locations description (optional)"></textarea>
             </div>
             <div class="col-12">
               <div class="d-flex gap-3">
