@@ -232,7 +232,7 @@ const content = {
     <div class="fade-in">
       <div class="form-container">
         <h4>
-          <i class="fas fa-user-plus text-primary"></i>
+          <i class="fas fa-user-plus text-primary users"></i>
           Create Users
         </h4>
         <form id="create-user-form" action="users/insert_users.php" method="POST">
@@ -294,7 +294,7 @@ const content = {
     <div class="fade-in">
       <div class="iframe-container">
         <h4>
-          <i class="fas fa-users text-primary"></i>
+          <i class="fas fa-users text-primary users"></i>
           Users Management
         </h4>
         <iframe src="users/view_users.php" width="100%" height="600px"></iframe>

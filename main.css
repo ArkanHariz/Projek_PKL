@@ -621,6 +621,15 @@ body {
   color: transparent;
 }
 
+.users {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Untuk browser modern */
+  background-clip: text;
+  color: transparent;
+}
+
 .btn-outline-secondary {
   border: 2px solid #6c757d;
   color: #6c757d;
