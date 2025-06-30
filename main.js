@@ -85,7 +85,7 @@ const content = {
     <div class="fade-in">
       <div class="form-container">
         <h4>
-          <i class="fas fa-plus-circle text-success"></i>
+          <i class="fas fa-plus-circle text-success locations"></i>
           Create Locations
         </h4>
         <form id="location-form" action="locations/insert_location.php" method="POST">
@@ -118,7 +118,7 @@ const content = {
     <div class="fade-in">
       <div class="iframe-container">
         <h4>
-          <i class="fas fa-list text-success"></i>
+          <i class="fas fa-list text-success locations"></i>
           Locations List
         </h4>
         <iframe src="locations/view_locations.php" width="100%" height="600px"></iframe>

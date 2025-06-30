@@ -633,6 +633,15 @@ body {
   color: transparent;
 }
 
+.locations {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Untuk browser modern */
+  background-clip: text;
+  color: transparent;
+}
+
 .locations-parts {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   -webkit-background-clip: text;
