@@ -88,7 +88,7 @@ const content = {
           <i class="fas fa-plus-circle text-success locations"></i>
           Create Locations
         </h4>
-        <form id="location-form" action="locations/insert_location.php" method="POST">
+        <form id="location-form">
           <div class="row g-4">
             <div class="col-md-8">
               <label for="locationName" class="form-label">Locations Name</label>
@@ -109,6 +109,7 @@ const content = {
               </div>
             </div>
           </div>
+          <div id="location-message" class="mt-3"></div>
         </form>
       </div>
     </div>
@@ -401,6 +402,8 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (page === "parts-create") {
         populatePartsLocationDropdown()
         populateEquipmentLocationDropdown()
+      } else if (page === "locations-create") {
+        initializeLocationForm();
       }
 
       // Close mobile sidebar
@@ -455,6 +458,49 @@ function initializeUsersForm() {
         document.getElementById("user-message").innerHTML = '<div class="alert alert-danger">Terjadi kesalahan.</div>'
       })
   })
+}
+
+function initializeLocationForm() {
+  const form = document.getElementById("location-form");
+  if (!form) return;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const nama_location = document.getElementById("locationName").value.trim();
+    const keterangan = document.getElementById("description").value.trim();
+
+    if (!nama_location) {
+      document.getElementById("location-message").innerHTML =
+        '<div class="alert alert-danger">Nama lokasi wajib diisi.</div>';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("nama_location", nama_location);
+    formData.append("keterangan", keterangan);
+
+    fetch("locations/insert_location.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.text())
+      .then((result) => {
+        if (result.includes("berhasil") || result.includes("success")) {
+          document.getElementById("location-message").innerHTML =
+            '<div class="alert alert-success">Lokasi berhasil ditambahkan.</div>';
+          form.reset();
+        } else {
+          document.getElementById("location-message").innerHTML =
+            '<div class="alert alert-danger">Gagal menambahkan lokasi.</div>';
+        }
+      })
+      .catch((err) => {
+        document.getElementById("location-message").innerHTML =
+          '<div class="alert alert-danger">Terjadi kesalahan koneksi.</div>';
+        console.error(err);
+      });
+  });
 }
 
 function togglePassword(fieldId) {
