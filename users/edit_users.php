@@ -7,7 +7,12 @@ $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 $role = $_POST['role'];
 
 if (empty($id) || empty($username) || empty($email) || empty($role)) {
-    echo "<script>alert('Semua field wajib diisi.'); history.back();</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Semua field wajib diisi!', 'danger');
+        }
+        history.back();
+    </script>";
     exit;
 }
 
@@ -15,9 +20,21 @@ $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, role = ? WHERE
 $stmt->bind_param("sssi", $username, $email, $role, $id);
 
 if ($stmt->execute()) {
-    echo "<script>alert('Data berhasil diupdate'); window.location.href='view_users.php';</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('User berhasil diupdate!', 'success');
+        }
+        setTimeout(() => {
+            window.location.href='view_users.php';
+        }, 1000);
+    </script>";
 } else {
-    echo "<script>alert('Gagal update: " . $stmt->error . "'); history.back();</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Gagal update user: " . $stmt->error . "', 'danger');
+        }
+        history.back();
+    </script>";
 }
 
 $stmt->close();

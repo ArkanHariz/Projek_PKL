@@ -1,12 +1,23 @@
 <?php
 require_once '../config.php';
 
+header('Content-Type: application/json');
+
 $username = htmlspecialchars($_POST['username'] ?? '');
 $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $password = $_POST['password'] ?? '';
 $role = $_POST['role'] ?? '';
 
 if (!empty($username) && !empty($email) && !empty($password) && !empty($role)) {
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Format email tidak valid.'
+        ]);
+        exit;
+    }
+    
     // Cek apakah username atau email sudah digunakan
     $check = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
     $check->bind_param("ss", $username, $email);
@@ -14,7 +25,10 @@ if (!empty($username) && !empty($email) && !empty($password) && !empty($role)) {
     $check->store_result();
 
     if ($check->num_rows > 0) {
-        echo "<script>alert('Username atau email sudah terdaftar.'); window.history.back();</script>";
+        echo json_encode([
+            'success' => false,
+            'message' => 'Username atau email sudah terdaftar.'
+        ]);
         $check->close();
         $conn->close();
         exit;
@@ -25,12 +39,25 @@ if (!empty($username) && !empty($email) && !empty($password) && !empty($role)) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $username, $email, $hashedPassword, $role);
-    $stmt->execute();
+    
+    if ($stmt->execute()) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'User berhasil ditambahkan!'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Gagal menambahkan user: ' . $stmt->error
+        ]);
+    }
     $stmt->close();
 
-    echo "<script>alert('Data berhasil disimpan!'); window.location.href='../main.html';</script>";
 } else {
-    echo "<script>alert('Semua field wajib diisi.'); window.history.back();</script>";
+    echo json_encode([
+        'success' => false,
+        'message' => 'Semua field wajib diisi.'
+    ]);
 }
 
 $conn->close();

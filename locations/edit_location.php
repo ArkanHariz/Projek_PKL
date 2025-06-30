@@ -9,9 +9,21 @@ $stmt = $conn->prepare("UPDATE locations SET nama_location = ?, keterangan = ? W
 $stmt->bind_param("ssi", $nama_location, $keterangan, $id);
 
 if ($stmt->execute()) {
-    echo "<script>alert('Data berhasil diupdate'); window.location.href='view_locations.php';</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Lokasi berhasil diupdate!', 'success');
+        }
+        setTimeout(() => {
+            window.location.href='view_locations.php';
+        }, 1000);
+    </script>";
 } else {
-    echo "<script>alert('Gagal update'); history.back();</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Gagal update lokasi!', 'danger');
+        }
+        history.back();
+    </script>";
 }
 
 $stmt->close();

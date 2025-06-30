@@ -11,9 +11,21 @@ $stmt = $conn->prepare("UPDATE parts SET nama_part = ?, location_part_id = ?, eq
 $stmt->bind_param("ssssi", $nama_parts, $location_part_id, $equipmentLocation, $keterangan, $id);
 
 if ($stmt->execute()) {
-    echo "<script>alert('Data berhasil diupdate'); window.location.href='view_parts.php';</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Parts berhasil diupdate!', 'success');
+        }
+        setTimeout(() => {
+            window.location.href='view_parts.php';
+        }, 1000);
+    </script>";
 } else {
-    echo "<script>alert('Gagal Update'); history.back();</script>";
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Gagal update parts!', 'danger');
+        }
+        history.back();
+    </script>";
 }
 
 $stmt->close();

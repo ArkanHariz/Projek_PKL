@@ -394,17 +394,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update breadcrumb
       updateBreadcrumb(page)
 
-      // Run additional scripts based on page
-      if (page === "admin-create-user") {
-        initializeUsersForm()
-      } else if (page === "equipment-create") {
-        populateLocationDropdown()
-      } else if (page === "parts-create") {
-        populatePartsLocationDropdown()
-        populateEquipmentLocationDropdown()
-      } else if (page === "locations-create") {
-        initializeLocationForm();
-      }
+      // Initialize all forms with the new comprehensive function
+      setTimeout(() => {
+        initializeAllForms()
+      }, 100)
 
       // Close mobile sidebar
       closeSidebar()
@@ -412,7 +405,200 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 })
 
-// Form initialization functions
+// Comprehensive form initialization function
+function initializeAllForms() {
+  const currentPage = document.querySelector(".menu-item.active")?.getAttribute("data-page")
+
+  switch (currentPage) {
+    case "locations-create":
+      initializeLocationForm()
+      break
+    case "equipment-create":
+      initializeEquipmentForm()
+      break
+    case "parts-create":
+      initializePartsForm()
+      break
+    case "locations-parts-create":
+      initializeLocationPartsForm()
+      break
+    case "admin-create-user":
+      initializeUsersForm()
+      break
+  }
+}
+
+function initializeLocationForm() {
+  const form = document.getElementById("location-form")
+  if (!form) return
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    const nama_location = document.getElementById("locationName").value.trim()
+    const keterangan = document.getElementById("description").value.trim()
+
+    if (!nama_location) {
+      showToast("Nama lokasi wajib diisi.", "danger")
+      return
+    }
+
+    const formData = new FormData()
+    formData.append("nama_location", nama_location)
+    formData.append("keterangan", keterangan)
+
+    fetch("locations/insert_location.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          showToast(result.message, "success")
+          form.reset()
+        } else {
+          showToast(result.message, "danger")
+        }
+      })
+      .catch((err) => {
+        showToast("Terjadi kesalahan koneksi.", "danger")
+        console.error(err)
+      })
+  })
+}
+
+function initializeEquipmentForm() {
+  const form = document.getElementById("equipment-form")
+  if (!form) return
+
+  // Populate location dropdown
+  populateLocationDropdown()
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    const nama_equipment = document.getElementById("nama_equipment").value.trim()
+    const location_id = document.getElementById("location_id").value
+    const status = document.getElementById("status").value
+    const keterangan = document.getElementById("keterangan").value.trim()
+
+    if (!nama_equipment || !location_id || !status) {
+      showToast("Nama equipment, lokasi, dan status wajib diisi.", "danger")
+      return
+    }
+
+    const formData = new FormData()
+    formData.append("nama_equipment", nama_equipment)
+    formData.append("location_id", location_id)
+    formData.append("status", status)
+    formData.append("keterangan", keterangan)
+
+    fetch("equipment/insert_equipment.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          showToast(result.message, "success")
+          form.reset()
+        } else {
+          showToast(result.message, "danger")
+        }
+      })
+      .catch((err) => {
+        showToast("Terjadi kesalahan koneksi.", "danger")
+        console.error(err)
+      })
+  })
+}
+
+function initializePartsForm() {
+  const form = document.getElementById("parts-form")
+  if (!form) return
+
+  // Populate dropdowns
+  populatePartsLocationDropdown()
+  populateEquipmentLocationDropdown()
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    const partName = document.getElementById("partName").value.trim()
+    const location_part_id = document.getElementById("location_part_id").value
+    const equipmentLocation = document.getElementById("equipmentLocation").value
+    const keterangan = document.getElementById("keterangan").value.trim()
+
+    if (!partName || !location_part_id || !equipmentLocation) {
+      showToast("Nama parts, lokasi parts, dan equipment wajib diisi.", "danger")
+      return
+    }
+
+    const formData = new FormData()
+    formData.append("partName", partName)
+    formData.append("location_part_id", location_part_id)
+    formData.append("equipmentLocation", equipmentLocation)
+    formData.append("keterangan", keterangan)
+
+    fetch("parts/insert_parts.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          showToast(result.message, "success")
+          form.reset()
+        } else {
+          showToast(result.message, "danger")
+        }
+      })
+      .catch((err) => {
+        showToast("Terjadi kesalahan koneksi.", "danger")
+        console.error(err)
+      })
+  })
+}
+
+function initializeLocationPartsForm() {
+  const form = document.getElementById("location-parts-form")
+  if (!form) return
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    const nama_location_part = document.getElementById("locationspartsName").value.trim()
+    const keterangan = document.getElementById("descriptionlocationsParts").value.trim()
+
+    if (!nama_location_part) {
+      showToast("Nama lokasi parts wajib diisi.", "danger")
+      return
+    }
+
+    const formData = new FormData()
+    formData.append("nama_location_part", nama_location_part)
+    formData.append("keterangan", keterangan)
+
+    fetch("parts/insert_location_parts.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          showToast(result.message, "success")
+          form.reset()
+        } else {
+          showToast(result.message, "danger")
+        }
+      })
+      .catch((err) => {
+        showToast("Terjadi kesalahan koneksi.", "danger")
+        console.error(err)
+      })
+  })
+}
+
 function initializeUsersForm() {
   const form = document.getElementById("create-user-form")
   if (!form) return
@@ -427,13 +613,12 @@ function initializeUsersForm() {
     const role = document.getElementById("role").value
 
     if (!username || !email || !password || !verifyPassword || !role) {
-      document.getElementById("user-message").innerHTML =
-        '<div class="alert alert-danger">Semua kolom wajib diisi.</div>'
+      showToast("Semua kolom wajib diisi.", "danger")
       return
     }
 
     if (password !== verifyPassword) {
-      document.getElementById("user-message").innerHTML = '<div class="alert alert-danger">Password tidak cocok.</div>'
+      showToast("Password tidak cocok.", "danger")
       return
     }
 
@@ -447,56 +632,20 @@ function initializeUsersForm() {
       method: "POST",
       body: formData,
     })
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((result) => {
-        document.getElementById("user-message").innerHTML =
-          '<div class="alert alert-success">User berhasil dibuat.</div>'
-        form.reset()
+        if (result.success) {
+          showToast(result.message, "success")
+          form.reset()
+        } else {
+          showToast(result.message, "danger")
+        }
       })
       .catch((error) => {
         console.error("Error:", error)
-        document.getElementById("user-message").innerHTML = '<div class="alert alert-danger">Terjadi kesalahan.</div>'
+        showToast("Terjadi kesalahan koneksi.", "danger")
       })
   })
-}
-
-function initializeLocationForm() {
-  const form = document.getElementById("location-form");
-  if (!form) return;
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const nama_location = document.getElementById("locationName").value.trim();
-    const keterangan = document.getElementById("description").value.trim();
-
-    if (!nama_location) {
-      showToast("Nama lokasi wajib diisi.", "danger");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("nama_location", nama_location);
-    formData.append("keterangan", keterangan);
-
-    fetch("locations/insert_location.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.text())
-      .then((result) => {
-        if (result.includes("berhasil") || result.includes("success")) {
-          showToast("Lokasi berhasil ditambahkan.", "success");
-          form.reset();
-        } else {
-          showToast("Gagal menambahkan lokasi.", "danger");
-        }
-      })
-      .catch((err) => {
-        showToast("Terjadi kesalahan koneksi.", "danger");
-        console.error(err);
-      });
-  });
 }
 
 function togglePassword(fieldId) {
@@ -565,29 +714,26 @@ function populateEquipmentLocationDropdown() {
     .catch((error) => console.error("Gagal load equipment - location:", error))
 }
 
-function showToast(message, type = 'success') {
-  const toastContainer = document.getElementById('toast-container');
-  const toastId = 'toast-' + Date.now();
+function showToast(message, type = "success") {
+  const toastContainer = document.getElementById("toast-container")
+  const toastId = "toast-" + Date.now()
 
-  const toast = document.createElement('div');
-  toast.className = `toast align-items-center text-white bg-${type} border-0 show fade`;
-  toast.id = toastId;
-  toast.setAttribute('role', 'alert');
-  toast.setAttribute('aria-live', 'assertive');
-  toast.setAttribute('aria-atomic', 'true');
+  const toast = document.createElement("div")
+  toast.className = `toast align-items-center text-white bg-${type} border-0 show fade`
+  toast.id = toastId
+  toast.setAttribute("role", "alert")
+  toast.setAttribute("aria-live", "assertive")
+  toast.setAttribute("aria-atomic", "true")
 
   toast.innerHTML = `
     <div class="d-flex">
       <div class="toast-body">${message}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"></button>
     </div>
-  `;
+  `
 
-  toastContainer.appendChild(toast);
-
-  const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
-  bsToast.show();
+  toastContainer.appendChild(toast)
 
   // Auto-remove after fade out
-  setTimeout(() => toast.remove(), 4000);
+  setTimeout(() => toast.remove(), 4000)
 }
