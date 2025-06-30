@@ -471,8 +471,7 @@ function initializeLocationForm() {
     const keterangan = document.getElementById("description").value.trim();
 
     if (!nama_location) {
-      document.getElementById("location-message").innerHTML =
-        '<div class="alert alert-danger">Nama lokasi wajib diisi.</div>';
+      showToast("Nama lokasi wajib diisi.", "danger");
       return;
     }
 
@@ -487,17 +486,14 @@ function initializeLocationForm() {
       .then((res) => res.text())
       .then((result) => {
         if (result.includes("berhasil") || result.includes("success")) {
-          document.getElementById("location-message").innerHTML =
-            '<div class="alert alert-success">Lokasi berhasil ditambahkan.</div>';
+          showToast("Lokasi berhasil ditambahkan.", "success");
           form.reset();
         } else {
-          document.getElementById("location-message").innerHTML =
-            '<div class="alert alert-danger">Gagal menambahkan lokasi.</div>';
+          showToast("Gagal menambahkan lokasi.", "danger");
         }
       })
       .catch((err) => {
-        document.getElementById("location-message").innerHTML =
-          '<div class="alert alert-danger">Terjadi kesalahan koneksi.</div>';
+        showToast("Terjadi kesalahan koneksi.", "danger");
         console.error(err);
       });
   });
@@ -567,4 +563,31 @@ function populateEquipmentLocationDropdown() {
       })
     })
     .catch((error) => console.error("Gagal load equipment - location:", error))
+}
+
+function showToast(message, type = 'success') {
+  const toastContainer = document.getElementById('toast-container');
+  const toastId = 'toast-' + Date.now();
+
+  const toast = document.createElement('div');
+  toast.className = `toast align-items-center text-white bg-${type} border-0 show fade`;
+  toast.id = toastId;
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  toast.setAttribute('aria-atomic', 'true');
+
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">${message}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  `;
+
+  toastContainer.appendChild(toast);
+
+  const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+  bsToast.show();
+
+  // Auto-remove after fade out
+  setTimeout(() => toast.remove(), 4000);
 }
