@@ -187,7 +187,7 @@ const content = {
     <div class="fade-in">
       <div class="form-container">
         <h4>
-          <i class="fas fa-plus-circle text-info"></i>
+          <i class="fas fa-plus-circle text-info locations-parts"></i>
           Create Locations Parts
         </h4>
         <form id="location-parts-form" action="parts/insert_location_parts.php" method="POST">
@@ -220,7 +220,7 @@ const content = {
     <div class="fade-in">
       <div class="iframe-container">
         <h4>
-          <i class="fas fa-list text-info"></i>
+          <i class="fas fa-list text-info locations-parts"></i>
           Locations Parts List
         </h4>
         <iframe src="parts/view_location_parts.php" width="100%" height="600px"></iframe>

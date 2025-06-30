@@ -612,6 +612,15 @@ body {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
 
+.locations-parts {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Untuk browser modern */
+  background-clip: text;
+  color: transparent;
+}
+
 .btn-outline-secondary {
   border: 2px solid #6c757d;
   color: #6c757d;
