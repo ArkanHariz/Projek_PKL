@@ -47,11 +47,13 @@ $result = $conn->query($sql);
             <thead>
                 <tr>
                     <th style="width: 8%">No.</th>
-                    <th style="width: 25%">Equipment Name</th>
-                    <th style="width: 20%">Equipment Locations</th>
-                    <th style="width: 15%">Status</th>
-                    <th style="width: 20%">Note</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '25%' : '30%' ?>">Equipment Name</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '20%' : '25%' ?>">Equipment Locations</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '15%' : '18%' ?>">Status</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '20%' : '27%' ?>">Note</th>
+                    <?php if ($canEdit || $canDelete): ?>
                     <th style="width: 12%">Actions</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +69,7 @@ $result = $conn->query($sql);
                                 </span>
                             </td>
                             <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
+                            <?php if ($canEdit || $canDelete): ?>
                             <td class="td-actions">
                                 <?php if ($canEdit): ?>
                                     <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
@@ -79,10 +82,11 @@ $result = $conn->query($sql);
                                     </a>
                                 <?php endif; ?>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <tr><td colspan="6" class="text-center text-muted">Belum ada data.</td></tr>
+                    <tr><td colspan="<?= ($canEdit || $canDelete) ? '6' : '5' ?>" class="text-center text-muted">Belum ada data.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>

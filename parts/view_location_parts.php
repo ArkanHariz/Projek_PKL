@@ -42,9 +42,11 @@ $result = $conn->query($sql);
       <thead>
         <tr>
           <th style="width: 5%">No.</th>
-          <th style="width: 35%">Locations Parts Name</th>
-          <th style="width: 40%">Note</th>
+          <th style="width: <?= ($canEdit || $canDelete) ? '35%' : '45%' ?>">Locations Parts Name</th>
+          <th style="width: <?= ($canEdit || $canDelete) ? '40%' : '50%' ?>">Note</th>
+          <?php if ($canEdit || $canDelete): ?>
           <th style="width: 20%">Actions</th>
+          <?php endif; ?>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -54,6 +56,7 @@ $result = $conn->query($sql);
               <td><?= $no++ ?></td>
               <td class="td-nama_location_part"><?= htmlspecialchars($row['nama_location_part']) ?></td>
               <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
+              <?php if ($canEdit || $canDelete): ?>
               <td class="td-actions">
                 <?php if ($canEdit): ?>
                   <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
@@ -66,10 +69,11 @@ $result = $conn->query($sql);
                   </a>
                 <?php endif; ?>
               </td>
+              <?php endif; ?>
             </tr>
           <?php endwhile; ?>
         <?php else: ?>
-          <tr><td colspan="4" class="text-center text-muted">Belum ada data.</td></tr>
+          <tr><td colspan="<?= ($canEdit || $canDelete) ? '4' : '3' ?>" class="text-center text-muted">Belum ada data.</td></tr>
         <?php endif; ?>
       </tbody>
     </table>

@@ -58,11 +58,13 @@ $result = $conn->query($sql);
             <thead>
                 <tr>
                     <th style="width: 8%">No.</th>
-                    <th style="width: 20%">Parts Name</th>
-                    <th style="width: 18%">Parts Locations</th>
-                    <th style="width: 25%">Equipment</th>
-                    <th style="width: 20%">Note</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '20%' : '25%' ?>">Parts Name</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '18%' : '22%' ?>">Parts Locations</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '25%' : '30%' ?>">Equipment</th>
+                    <th style="width: <?= ($canEdit || $canDelete) ? '20%' : '23%' ?>">Note</th>
+                    <?php if ($canEdit || $canDelete): ?>
                     <th style="width: 15%">Actions</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +76,7 @@ $result = $conn->query($sql);
                             <td class="td-location_part" data-location-id="<?= $row['location_part_id'] ?>"><?= htmlspecialchars($row['nama_location_part']) ?></td>
                             <td class="td-equipment" data-equipment-id="<?= $row['equipment_id'] ?>"><?= htmlspecialchars($row['nama_equipment'].' - '.$row['nama_location']) ?></td>
                             <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
+                            <?php if ($canEdit || $canDelete): ?>
                             <td class="td-actions">
                                 <?php if ($canEdit): ?>
                                     <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
@@ -86,10 +89,11 @@ $result = $conn->query($sql);
                                     </a>
                                 <?php endif; ?>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <tr><td colspan="6" class="text-center text-muted">Belum ada data.</td></tr>
+                    <tr><td colspan="<?= ($canEdit || $canDelete) ? '6' : '5' ?>" class="text-center text-muted">Belum ada data.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
