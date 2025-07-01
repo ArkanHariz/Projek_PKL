@@ -1,4 +1,11 @@
 <?php
+require_once '../auth/session_check.php';
+requireLogin();
+
+$userRole = getUserRole();
+$canEdit = hasPermission('edit') || hasPermission('update');
+$canDelete = hasPermission('delete');
+
 require_once '../config.php';
 
 $limit = 5;
@@ -34,6 +41,7 @@ $result = $conn->query($sql);
     <title>Parts List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="view_parts.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body class="p-4">
     <!-- Table Container -->
@@ -67,12 +75,16 @@ $result = $conn->query($sql);
                             <td class="td-equipment" data-equipment-id="<?= $row['equipment_id'] ?>"><?= htmlspecialchars($row['nama_equipment'].' - '.$row['nama_location']) ?></td>
                             <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
                             <td class="td-actions">
-                                <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <a href="delete_parts.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Parts ini ?')" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i> Delete
-                                </a>
+                                <?php if ($canEdit): ?>
+                                    <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                <?php endif; ?>
+                                <?php if ($canDelete): ?>
+                                    <a href="delete_parts.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Parts ini ?')" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -175,13 +187,10 @@ $result = $conn->query($sql);
             row.querySelector('.td-keterangan').innerHTML = `<textarea class='form-control' rows='2'>${keterangan}</textarea>`;
 
             // Change action buttons
-            row.querySelector('.td-actions').innerHTML = `
-                <button type='button' class='btn btn-sm btn-success me-1' onclick='saveEdit(this, ${id})'>
-                    <i class='fas fa-save'></i> Save
-                </button>
-                <button type='button' class='btn btn-sm btn-secondary' onclick='cancelEdit(this)'>
-                    <i class='fas fa-times'></i> Cancel
-                </button>`;
+            let actionsHTML = ``;
+            actionsHTML += `<button type='button' class='btn btn-sm btn-success me-1' onclick='saveEdit(this, ${id})'><i class='fas fa-save'></i> Save</button>`;
+            actionsHTML += `<button type='button' class='btn btn-sm btn-secondary' onclick='cancelEdit(this)'><i class='fas fa-times'></i> Cancel</button>`;
+            row.querySelector('.td-actions').innerHTML = actionsHTML;
             
             row.classList.add('edit-mode');
         }

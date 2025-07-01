@@ -1,4 +1,11 @@
 <?php
+require_once '../auth/session_check.php';
+requireLogin();
+
+$userRole = getUserRole();
+$canEdit = hasPermission('edit') || hasPermission('update');
+$canDelete = hasPermission('delete');
+
 require_once '../config.php';
 
 $limit = 10;
@@ -61,12 +68,16 @@ $result = $conn->query($sql);
                             </td>
                             <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
                             <td class="td-actions">
-                                <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <a href="delete_equipment.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Equipment ini ?')" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i> Delete
-                                </a>
+                                <?php if ($canEdit): ?>
+                                    <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                <?php endif; ?>
+                                <?php if ($canDelete): ?>
+                                    <a href="delete_equipment.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus Equipment ini ?')" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -131,6 +142,8 @@ $result = $conn->query($sql);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script>
         let locationsData = [];
+        let canEdit = <?php echo $canEdit ? 'true' : 'false'; ?>;
+        let canDelete = <?php echo $canDelete ? 'true' : 'false'; ?>;
 
         // Load locations data for dropdown
         fetch('../locations/get_locations.php')
@@ -205,6 +218,34 @@ $result = $conn->query($sql);
             document.getElementById('edit-keterangan').value = keterangan;
 
             document.getElementById('editForm').submit();
+        }
+
+        // Disable edit functionality if user doesn't have edit permissions
+        if (!canEdit) {
+            function disableEditButtons() {
+                const editButtons = document.querySelectorAll('.btn-warning');
+                editButtons.forEach(button => {
+                    button.disabled = true;
+                    button.classList.remove('btn-warning');
+                    button.classList.add('btn-secondary');
+                });
+            }
+
+            // Call the function to disable edit buttons after the page loads
+            window.addEventListener('load', disableEditButtons);
+        }
+
+        // Disable delete functionality if user doesn't have delete permissions
+        if (!canDelete) {
+            function disableDeleteButtons() {
+                const deleteButtons = document.querySelectorAll('.btn-danger');
+                deleteButtons.forEach(button => {
+                    button.style.display = 'none';
+                });
+            }
+
+            // Call the function to disable delete buttons after the page loads
+            window.addEventListener('load', disableDeleteButtons);
         }
     </script>
 </body>

@@ -1,4 +1,12 @@
 <?php
+require_once '../auth/session_check.php';
+requireLogin();
+
+$userRole = getUserRole();
+$canEdit = hasPermission('edit') || hasPermission('update');
+$canDelete = hasPermission('delete');
+?>
+<?php
 require_once '../config.php';
 
 $limit = 10;
@@ -35,9 +43,11 @@ $result = $conn->query($sql);
         <thead>
           <tr>
             <th style="width: 10%">No.</th>
-            <th style="width: 30%">Locations Name</th>
-            <th style="width: 40%">Note</th>
+            <th style="width: <?= $canEdit || $canDelete ? '30%' : '45%' ?>">Locations Name</th>
+            <th style="width: <?= $canEdit || $canDelete ? '40%' : '45%' ?>">Note</th>
+            <?php if ($canEdit || $canDelete): ?>
             <th style="width: 20%">Actions</th>
+            <?php endif; ?>
           </tr>
         </thead>
         <tbody id="tableBody">
@@ -47,18 +57,24 @@ $result = $conn->query($sql);
                 <td><?= $no++ ?></td>
                 <td class="td-nama"><?= htmlspecialchars($row['nama_location']) ?></td>
                 <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
+                <?php if ($canEdit || $canDelete): ?>
                 <td class="td-actions">
+                  <?php if ($canEdit): ?>
                   <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
                     <i class="fas fa-edit"></i> Edit
                   </button>
+                  <?php endif; ?>
+                  <?php if ($canDelete): ?>
                   <a href="delete_location.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi ini?')" class="btn btn-sm btn-danger">
                     <i class="fas fa-trash"></i> Delete
                   </a>
+                  <?php endif; ?>
                 </td>
+                <?php endif; ?>
               </tr>
             <?php endwhile; ?>
           <?php else: ?>
-            <tr><td colspan="4" class="text-center text-muted">Belum ada data.</td></tr>
+            <tr><td colspan="<?= $canEdit || $canDelete ? '4' : '3' ?>" class="text-center text-muted">Belum ada data.</td></tr>
           <?php endif; ?>
         </tbody>
       </table>
@@ -120,7 +136,15 @@ $result = $conn->query($sql);
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <script>
+    // Check if user has edit permissions
+    const canEdit = <?= json_encode($canEdit) ?>;
+  
     function enableEdit(btn) {
+      if (!canEdit) {
+        alert('You do not have permission to edit.');
+        return;
+      }
+    
       const row = btn.closest('tr');
       const namaCell = row.querySelector('.td-nama');
       const ketCell = row.querySelector('.td-keterangan');

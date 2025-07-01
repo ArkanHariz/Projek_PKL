@@ -1,4 +1,11 @@
 <?php
+require_once '../auth/session_check.php';
+requireLogin();
+
+$userRole = getUserRole();
+$canEdit = hasPermission('edit') || hasPermission('update');
+$canDelete = hasPermission('delete');
+
 require_once '../config.php';
 
 $limit = 10;
@@ -20,6 +27,7 @@ $result = $conn->query($sql);
   <title>Locations Parts</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="view_location_parts.css"></link>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body class="p-4">
   <!-- Table Container -->
@@ -33,9 +41,9 @@ $result = $conn->query($sql);
     <table class="table table-hover">
       <thead>
         <tr>
-          <th style="width: 10%">No.</th>
+          <th style="width: 5%">No.</th>
           <th style="width: 35%">Locations Parts Name</th>
-          <th style="width: 35%">Note</th>
+          <th style="width: 40%">Note</th>
           <th style="width: 20%">Actions</th>
         </tr>
       </thead>
@@ -47,12 +55,16 @@ $result = $conn->query($sql);
               <td class="td-nama_location_part"><?= htmlspecialchars($row['nama_location_part']) ?></td>
               <td class="td-keterangan"><?= htmlspecialchars($row['keterangan']) ?></td>
               <td class="td-actions">
-                <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-                <a href="delete_location_parts.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi parts ini?')" class="btn btn-sm btn-danger">
-                  <i class="fas fa-trash"></i> Delete
-                </a>
+                <?php if ($canEdit): ?>
+                  <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                <?php endif; ?>
+                <?php if ($canDelete): ?>
+                  <a href="delete_location_parts.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus lokasi parts ini?')" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                  </a>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endwhile; ?>
@@ -144,12 +156,16 @@ $result = $conn->query($sql);
       row.querySelector('.td-nama_location_part').textContent = nama;
       row.querySelector('.td-keterangan').textContent = ket;
       row.querySelector('.td-actions').innerHTML = `
-        <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
-          <i class="fas fa-edit"></i> Edit
-        </button>
-        <a href="delete_location_parts.php?id=${row.getAttribute('data-id')}" onclick="return confirm('Hapus lokasi parts ini?')" class="btn btn-sm btn-danger">
-          <i class="fas fa-trash"></i> Delete
-        </a>
+        <?php if ($canEdit): ?>
+          <button type="button" class="btn btn-sm btn-warning me-1" onclick="enableEdit(this)">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+        <?php endif; ?>
+        <?php if ($canDelete): ?>
+          <a href="delete_location_parts.php?id=${row.getAttribute('data-id')}" onclick="return confirm('Hapus lokasi parts ini?')" class="btn btn-sm btn-danger">
+            <i class="fas fa-trash"></i> Delete
+          </a>
+        <?php endif; ?>
       `;
       row.classList.remove('edit-mode');
     }

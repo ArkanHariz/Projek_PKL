@@ -310,13 +310,9 @@ const content = {
           <div class="action-icon users-bg mx-auto mb-4" style="width: 100px; height: 100px; font-size: 3rem;">
             <i class="fas fa-sign-out-alt"></i>
           </div>
-          <h2 class="mb-3">Logout Successful</h2>
-          <p class="lead text-muted mb-2">You have been logged out successfully.</p>
-          <p class="text-muted">Thank you for using Dover Chemical CMMS System!</p>
+          <h2 class="mb-3">Logging Out...</h2>
+          <p class="lead text-muted mb-2">Please wait while we log you out safely.</p>
         </div>
-        <button class="btn btn-primary btn-lg" onclick="window.location.reload()">
-          <i class="fas fa-sign-in-alt me-2"></i> Login Again
-        </button>
       </div>
     </div>
   `,
@@ -380,6 +376,14 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", function (e) {
       e.preventDefault()
 
+      const page = this.getAttribute("data-page")
+
+      // Handle logout specially
+      if (page === "logout") {
+        handleLogout()
+        return
+      }
+
       // Remove active class from all menu items
       document.querySelectorAll(".menu-item").forEach((el) => el.classList.remove("active"))
 
@@ -388,7 +392,6 @@ document.addEventListener("DOMContentLoaded", () => {
         this.classList.add("active")
       }
 
-      const page = this.getAttribute("data-page")
       document.getElementById("page-content").innerHTML = content[page] || "<h2>Page Not Found</h2>"
 
       // Update breadcrumb
@@ -404,6 +407,35 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 })
+
+function handleLogout() {
+  // Show logout content
+  document.getElementById("page-content").innerHTML = content.logout
+  updateBreadcrumb("logout")
+
+  // Perform logout
+  fetch("auth/logout.php", {
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        showToast("Logged out successfully", "success")
+        setTimeout(() => {
+          window.location.href = "login.html"
+        }, 2000)
+      } else {
+        showToast("Logout failed", "danger")
+      }
+    })
+    .catch((error) => {
+      console.error("Logout error:", error)
+      // Force redirect even if logout request fails
+      setTimeout(() => {
+        window.location.href = "login.html"
+      }, 2000)
+    })
+}
 
 // Comprehensive form initialization function
 function initializeAllForms() {

@@ -1,4 +1,18 @@
 <?php
+require_once '../auth/session_check.php';
+requireLogin();
+
+$userRole = getUserRole();
+// Only admin can manage users
+if ($userRole !== 'Admin') {
+    header('Location: ../main.html');
+    exit;
+}
+
+$canEdit = true; // Admin can edit
+$canDelete = true; // Admin can delete
+?>
+<?php
 require_once '../config.php';
 
 function getRoleLabel($role) {
