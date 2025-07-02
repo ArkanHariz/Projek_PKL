@@ -62,11 +62,15 @@ function hasPermission($permission) {
         case 'Viewer':
             return $permission === 'view'; // Viewer can only view
         case 'Dispatch':
-            return in_array($permission, ['view', 'create']); // Dispatch can view and create
+            return in_array($permission, ['view', 'create']) && $permission !== 'user_management'; // Dispatch can view and create but not manage users
         case 'Technician':
-            return in_array($permission, ['view', 'create', 'update']); // Technician can view, create, and update
+            return in_array($permission, ['view', 'create', 'update']) && $permission !== 'user_management'; // Technician can view, create, and update but not manage users
         default:
             return false;
     }
+}
+
+function canManageUsers() {
+    return getUserRole() === 'Admin';
 }
 ?>

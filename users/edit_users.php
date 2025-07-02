@@ -1,5 +1,19 @@
 <?php
 require_once '../config.php';
+require_once '../auth/session_check.php';
+
+// Check if user is logged in and is Admin
+requireLogin();
+$userRole = getUserRole();
+if ($userRole !== 'Admin') {
+    echo "<script>
+        if (window.parent && window.parent.showToast) {
+            window.parent.showToast('Access denied. Only administrators can edit users.', 'danger');
+        }
+        history.back();
+    </script>";
+    exit;
+}
 
 $id = $_POST['id'];
 $username = htmlspecialchars($_POST['username']);

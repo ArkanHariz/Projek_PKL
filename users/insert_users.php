@@ -1,5 +1,17 @@
 <?php
 require_once '../config.php';
+require_once '../auth/session_check.php';
+
+// Check if user is logged in and is Admin
+requireLogin();
+$userRole = getUserRole();
+if ($userRole !== 'Admin') {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Access denied. Only administrators can create users.'
+    ]);
+    exit;
+}
 
 header('Content-Type: application/json');
 

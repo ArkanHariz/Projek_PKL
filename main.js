@@ -769,3 +769,30 @@ function showToast(message, type = "success") {
   // Auto-remove after fade out
   setTimeout(() => toast.remove(), 4000)
 }
+
+function updateMenuForRole(role) {
+  const menuItems = document.querySelectorAll(".menu-item")
+
+  if (role === "Viewer") {
+    // Hide create/add menu items for viewers
+    menuItems.forEach((item) => {
+      const page = item.getAttribute("data-page")
+      if (page && (page.includes("create") || page.includes("add"))) {
+        item.style.display = "none"
+      }
+    })
+
+    // Hide user management for viewers
+    const userManagementSection = document.querySelector(".menu-section:last-of-type")
+    if (userManagementSection) {
+      userManagementSection.style.display = "none"
+    }
+  } else if (role === "Dispatch" || role === "Technician") {
+    // Hide user management for Dispatch and Technician
+    const userManagementSection = document.querySelector(".menu-section:last-of-type")
+    if (userManagementSection) {
+      userManagementSection.style.display = "none"
+    }
+  }
+  // Admin role has access to everything, so no restrictions
+}

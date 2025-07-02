@@ -223,6 +223,7 @@
 
     function updateMenuForRole(role) {
         const menuItems = document.querySelectorAll('.menu-item');
+        const userManagementSection = document.querySelector('.menu-section:last-of-type');
         
         if (role === 'Viewer') {
             // Hide create/add menu items for viewers
@@ -234,11 +235,31 @@
             });
             
             // Hide user management for viewers
-            const userManagementSection = document.querySelector('.menu-section:last-of-type');
             if (userManagementSection) {
                 userManagementSection.style.display = 'none';
             }
+        } else if (role === 'Dispatch' || role === 'Technician') {
+            // Hide user management for Dispatch and Technician
+            if (userManagementSection) {
+                userManagementSection.style.display = 'none';
+            }
+            
+            // Show message if they try to access user management
+            menuItems.forEach(item => {
+                const page = item.getAttribute('data-page');
+                if (page && (page.includes('admin-') || page.includes('user'))) {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (window.showToast) {
+                            showToast('Access denied. Only administrators can manage users.', 'warning');
+                        } else {
+                            alert('Access denied. Only administrators can manage users.');
+                        }
+                    });
+                }
+            });
         }
+        // Admin role has access to everything, so no restrictions
     }
   </script>
 </body>
