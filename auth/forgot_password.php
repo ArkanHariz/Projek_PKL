@@ -93,12 +93,40 @@ if ($action === 'search') {
         ]);
     }
     
-} elseif ($action === 'generate_new') {
-    // Generate new temporary password
+} elseif ($action === 'reset_password') {
+    // Reset password with user input
     if (empty($user_id)) {
         echo json_encode([
             'success' => false,
             'message' => 'User ID is required.'
+        ]);
+        exit;
+    }
+
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    // Validate passwords
+    if (empty($new_password) || empty($confirm_password)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Both password fields are required.'
+        ]);
+        exit;
+    }
+
+    if ($new_password !== $confirm_password) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Passwords do not match.'
+        ]);
+        exit;
+    }
+
+    if (strlen($new_password) < 6) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Password must be at least 6 characters long.'
         ]);
         exit;
     }
@@ -121,36 +149,33 @@ if ($action === 'search') {
         $user = $result->fetch_assoc();
         $stmt->close();
         
-        // Generate new temporary password
-        $new_password = $user['username'] . rand(1000, 9999);
-        
-        // Hash password for authentication
+        // Hash the new password
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         
-        // Update user password (only hash, no display column)
+        // Update user password
         $stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
         $stmt->bind_param("si", $hashed_password, $user_id);
         
         if ($stmt->execute()) {
             echo json_encode([
                 'success' => true,
-                'message' => 'New temporary password generated successfully.',
-                'new_password' => $new_password
+                'message' => 'Password has been reset successfully.',
+                'username' => $user['username']
             ]);
         } else {
             echo json_encode([
                 'success' => false,
-                'message' => 'Failed to generate new password.'
+                'message' => 'Failed to reset password.'
             ]);
         }
         
         $stmt->close();
         
     } catch (Exception $e) {
-        error_log("Generate password error: " . $e->getMessage());
+        error_log("Reset password error: " . $e->getMessage());
         echo json_encode([
             'success' => false,
-            'message' => 'An error occurred while generating new password.'
+            'message' => 'An error occurred while resetting password.'
         ]);
     }
 } else {

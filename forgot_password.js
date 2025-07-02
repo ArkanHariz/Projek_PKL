@@ -8,12 +8,21 @@ document.addEventListener("DOMContentLoaded", () => {
     identifierInput.focus()
   }
 
-  // Add form submit handler
+  // Add form submit handler for forgot password
   const forgotPasswordForm = document.getElementById("forgotPasswordForm")
   if (forgotPasswordForm) {
     forgotPasswordForm.addEventListener("submit", (e) => {
       e.preventDefault()
       searchAccount()
+    })
+  }
+
+  // Add form submit handler for reset password
+  const resetPasswordForm = document.getElementById("resetPasswordForm")
+  if (resetPasswordForm) {
+    resetPasswordForm.addEventListener("submit", (e) => {
+      e.preventDefault()
+      resetPassword()
     })
   }
 
@@ -27,9 +36,78 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 
+  // Add real-time password validation
+  addPasswordValidation()
+
   // Initialize tooltips for copy buttons
   initializeCopyButtonTooltips()
 })
+
+/**
+ * Add real-time password validation
+ */
+function addPasswordValidation() {
+  const newPasswordInput = document.getElementById("new-password")
+  const confirmPasswordInput = document.getElementById("confirm-password")
+
+  if (newPasswordInput && confirmPasswordInput) {
+    // Validate password strength
+    newPasswordInput.addEventListener("input", function () {
+      validatePasswordStrength(this.value)
+    })
+
+    // Validate password match
+    confirmPasswordInput.addEventListener("input", function () {
+      validatePasswordMatch(newPasswordInput.value, this.value)
+    })
+
+    newPasswordInput.addEventListener("input", function () {
+      if (confirmPasswordInput.value) {
+        validatePasswordMatch(this.value, confirmPasswordInput.value)
+      }
+    })
+  }
+}
+
+/**
+ * Validate password strength
+ */
+function validatePasswordStrength(password) {
+  const newPasswordInput = document.getElementById("new-password")
+
+  if (password.length === 0) {
+    newPasswordInput.classList.remove("valid", "invalid")
+    return
+  }
+
+  if (password.length >= 6) {
+    newPasswordInput.classList.add("valid")
+    newPasswordInput.classList.remove("invalid")
+  } else {
+    newPasswordInput.classList.add("invalid")
+    newPasswordInput.classList.remove("valid")
+  }
+}
+
+/**
+ * Validate password match
+ */
+function validatePasswordMatch(password, confirmPassword) {
+  const confirmPasswordInput = document.getElementById("confirm-password")
+
+  if (confirmPassword.length === 0) {
+    confirmPasswordInput.classList.remove("valid", "invalid")
+    return
+  }
+
+  if (password === confirmPassword && password.length >= 6) {
+    confirmPasswordInput.classList.add("valid")
+    confirmPasswordInput.classList.remove("invalid")
+  } else {
+    confirmPasswordInput.classList.add("invalid")
+    confirmPasswordInput.classList.remove("valid")
+  }
+}
 
 /**
  * Search for user account
@@ -126,19 +204,44 @@ function showStep3() {
 }
 
 /**
- * Generate new temporary password
+ * Reset password with user input
  */
-function generateNewPassword() {
+function resetPassword() {
   if (!currentUser || !currentUser.id) {
     alert("Error: User information not found. Please try again.")
     return
   }
 
-  showForgotPasswordLoading("Generating new password...")
+  const newPassword = document.getElementById("new-password").value
+  const confirmPassword = document.getElementById("confirm-password").value
+
+  // Validate passwords
+  if (!newPassword || !confirmPassword) {
+    alert("Please fill in both password fields.")
+    document.getElementById("new-password").focus()
+    return
+  }
+
+  if (newPassword.length < 6) {
+    alert("Password must be at least 6 characters long.")
+    document.getElementById("new-password").focus()
+    return
+  }
+
+  if (newPassword !== confirmPassword) {
+    alert("Passwords do not match. Please check and try again.")
+    document.getElementById("confirm-password").focus()
+    return
+  }
+
+  // Show loading
+  showForgotPasswordLoading("Resetting your password...")
 
   const formData = new FormData()
-  formData.append("action", "generate_new")
+  formData.append("action", "reset_password")
   formData.append("user_id", currentUser.id)
+  formData.append("new_password", newPassword)
+  formData.append("confirm_password", confirmPassword)
 
   fetch("auth/forgot_password.php", {
     method: "POST",
@@ -154,20 +257,53 @@ function generateNewPassword() {
       hideForgotPasswordLoading()
 
       if (data.success) {
-        // Show step 3 with new password
-        document.getElementById("final-username").value = currentUser.username
-        document.getElementById("final-password").value = data.new_password
+        // Show step 3 with success message
+        document.getElementById("final-username").value = data.username || currentUser.username
         showStep3()
-        alert("New Password Generated! A new temporary password has been created for your account.")
+        alert(
+          "Password Reset Successful! Your password has been reset successfully. You can now login with your new password.",
+        )
       } else {
-        alert("Generation Failed: " + (data.message || "Failed to generate new password."))
+        alert("Reset Failed: " + (data.message || "Failed to reset password."))
       }
     })
     .catch((error) => {
       hideForgotPasswordLoading()
-      console.error("Generation error:", error)
-      alert("Connection Error: Unable to generate new password. Please try again.")
+      console.error("Reset error:", error)
+      alert("Connection Error: Unable to reset password. Please try again.")
     })
+}
+
+/**
+ * Toggle new password visibility
+ */
+function toggleNewPassword() {
+  const passwordField = document.getElementById("new-password")
+  const toggleIcon = document.getElementById("newPasswordIcon")
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text"
+    toggleIcon.className = "fas fa-eye-slash"
+  } else {
+    passwordField.type = "password"
+    toggleIcon.className = "fas fa-eye"
+  }
+}
+
+/**
+ * Toggle confirm password visibility
+ */
+function toggleConfirmPassword() {
+  const passwordField = document.getElementById("confirm-password")
+  const toggleIcon = document.getElementById("confirmPasswordIcon")
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text"
+    toggleIcon.className = "fas fa-eye-slash"
+  } else {
+    passwordField.type = "password"
+    toggleIcon.className = "fas fa-eye"
+  }
 }
 
 /**
@@ -246,11 +382,23 @@ function resetForm() {
   document.getElementById("step2").style.display = "none"
   document.getElementById("step3").style.display = "none"
 
-  // Reset form
-  const form = document.getElementById("forgotPasswordForm")
-  if (form) {
-    form.reset()
+  // Reset forms
+  const forgotForm = document.getElementById("forgotPasswordForm")
+  const resetForm = document.getElementById("resetPasswordForm")
+
+  if (forgotForm) {
+    forgotForm.reset()
   }
+
+  if (resetForm) {
+    resetForm.reset()
+  }
+
+  // Clear validation classes
+  const inputs = document.querySelectorAll(".form-control")
+  inputs.forEach((input) => {
+    input.classList.remove("valid", "invalid")
+  })
 
   // Clear user data
   currentUser = null
@@ -321,8 +469,9 @@ function initializeCopyButtonTooltips() {
 // Export functions for global access
 window.forgotPassword = {
   searchAccount,
-  generateNewPassword,
-  toggleFinalPassword,
+  resetPassword,
+  toggleNewPassword,
+  toggleConfirmPassword,
   copyToClipboard,
   resetForm,
 }
