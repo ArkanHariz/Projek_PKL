@@ -210,9 +210,20 @@
         // Update user info in header
         const userNameElement = document.querySelector('.user-name');
         const userRoleElement = document.querySelector('.user-role');
+        const userAvatarElement = document.querySelector('.user-avatar');
         
         if (userNameElement) userNameElement.textContent = user.username;
         if (userRoleElement) userRoleElement.textContent = user.role;
+        
+        // Set role-specific avatar background
+        if (userAvatarElement) {
+            // Remove any existing role classes
+            userAvatarElement.classList.remove('role-admin', 'role-dispatch', 'role-technician', 'role-viewer');
+            
+            // Add the appropriate role class
+            const roleClass = 'role-' + user.role.toLowerCase();
+            userAvatarElement.classList.add(roleClass);
+        }
         
         // Store user info globally
         window.currentUser = user;
