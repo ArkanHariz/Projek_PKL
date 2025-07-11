@@ -9,7 +9,7 @@ $canDelete = hasPermission('delete');
 <?php
 require_once '../config.php';
 
-$limit = 10;
+$limit = 5;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -20,10 +20,10 @@ $searchParams = [];
 $paramTypes = '';
 
 if (!empty($search)) {
-    $searchCondition = "WHERE nama_location LIKE ? OR keterangan LIKE ?";
+    $searchCondition = "WHERE nama_location LIKE ?";
     $searchTerm = "%$search%";
-    $searchParams = [$searchTerm, $searchTerm];
-    $paramTypes = 'ss';
+    $searchParams = [$searchTerm];
+    $paramTypes = 's';
 }
 
 // Get total count with search
