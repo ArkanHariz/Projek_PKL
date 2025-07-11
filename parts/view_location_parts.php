@@ -11,13 +11,44 @@ require_once '../config.php';
 $limit = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-$totalResult = $conn->query("SELECT COUNT(*) AS total FROM location_parts");
+// Build search condition - only search in location part name
+$searchCondition = '';
+$searchParams = [];
+$paramTypes = '';
+
+if (!empty($search)) {
+    $searchCondition = "WHERE nama_location_part LIKE ?";
+    $searchTerm = "%$search%";
+    $searchParams = [$searchTerm];
+    $paramTypes = 's';
+}
+
+// Get total count with search
+$countSql = "SELECT COUNT(*) AS total FROM location_parts $searchCondition";
+if (!empty($searchParams)) {
+    $countStmt = $conn->prepare($countSql);
+    $countStmt->bind_param($paramTypes, ...$searchParams);
+    $countStmt->execute();
+    $totalResult = $countStmt->get_result();
+    $countStmt->close();
+} else {
+    $totalResult = $conn->query($countSql);
+}
 $totalRows = $totalResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 
-$sql = "SELECT * FROM location_parts ORDER BY id DESC LIMIT $limit OFFSET $offset";
-$result = $conn->query($sql);
+// Get data with search and pagination
+$sql = "SELECT * FROM location_parts $searchCondition ORDER BY id DESC LIMIT $limit OFFSET $offset";
+if (!empty($searchParams)) {
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($paramTypes, ...$searchParams);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $conn->query($sql);
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,6 +68,34 @@ $result = $conn->query($sql);
       <input type="hidden" name="nama_location_part" id="edit-nama-hidden">
       <input type="hidden" name="keterangan" id="edit-keterangan-hidden">
     </form>
+
+    <!-- Search Section -->
+    <div class="mb-3">
+        <form method="GET" class="d-flex gap-2">
+            <input 
+                type="text" 
+                name="search" 
+                class="form-control" 
+                placeholder="Search location parts..." 
+                value="<?= htmlspecialchars($search) ?>"
+                style="max-width: 300px;"
+            >
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+            <?php if (!empty($search)): ?>
+                <a href="view_location_parts.php" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            <?php endif; ?>
+        </form>
+        
+        <?php if (!empty($search)): ?>
+            <small class="text-muted mt-2 d-block">
+                Showing results for: "<strong><?= htmlspecialchars($search) ?></strong>" (<?= $totalRows ?> found)
+            </small>
+        <?php endif; ?>
+    </div>
 
     <table class="table table-hover">
       <thead>
@@ -73,7 +132,15 @@ $result = $conn->query($sql);
             </tr>
           <?php endwhile; ?>
         <?php else: ?>
-          <tr><td colspan="<?= ($canEdit || $canDelete) ? '4' : '3' ?>" class="text-center text-muted">Belum ada data.</td></tr>
+          <tr>
+            <td colspan="<?= ($canEdit || $canDelete) ? '4' : '3' ?>" class="text-center text-muted py-4">
+              <?php if (!empty($search)): ?>
+                No location parts found for "<?= htmlspecialchars($search) ?>"
+              <?php else: ?>
+                Belum ada data.
+              <?php endif; ?>
+            </td>
+          </tr>
         <?php endif; ?>
       </tbody>
     </table>
@@ -84,7 +151,7 @@ $result = $conn->query($sql);
   <nav class="mt-4">
     <ul class="pagination justify-content-center">
       <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-        <a class="page-link" href="?page=<?= $page - 1 ?>">
+        <a class="page-link" href="?page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?>">
           <i class="fas fa-chevron-left"></i> Previous
         </a>
       </li>
@@ -95,7 +162,7 @@ $result = $conn->query($sql);
       
       if ($start > 1): ?>
         <li class="page-item">
-          <a class="page-link" href="?page=1">1</a>
+          <a class="page-link" href="?page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?>">1</a>
         </li>
         <?php if ($start > 2): ?>
           <li class="page-item disabled">
@@ -106,7 +173,7 @@ $result = $conn->query($sql);
       
       for ($i = $start; $i <= $end; $i++): ?>
         <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-          <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+          <a class="page-link" href="?page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?>"><?= $i ?></a>
         </li>
       <?php endfor;
       
@@ -117,12 +184,12 @@ $result = $conn->query($sql);
           </li>
         <?php endif; ?>
         <li class="page-item">
-          <a class="page-link" href="?page=<?= $totalPages ?>"><?= $totalPages ?></a>
+          <a class="page-link" href="?page=<?= $totalPages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?>"><?= $totalPages ?></a>
         </li>
       <?php endif; ?>
       
       <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-        <a class="page-link" href="?page=<?= $page + 1 ?>">
+        <a class="page-link" href="?page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?>">
           Next <i class="fas fa-chevron-right"></i>
         </a>
       </li>
